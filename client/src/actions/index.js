@@ -11,8 +11,8 @@
         .then(res => res.json())
         .then(data => console.log(data));
 */
-
 export const PRICE = "PRICE";
+export const CHART = "CHART";
 
 export function getDataDone(data)
 {
@@ -42,5 +42,24 @@ export function startStream()
                 }
             };            
         })
+    }
+}
+
+export function getChart(instrument)
+{
+    return dispatch =>
+    {
+        fetch("/api/getcandles", {
+            method: "post",
+            body: JSON.stringify({
+                instrument,
+                granularity: "D1",
+                count: "30",
+                price:"BA"
+            }),
+            headers: {"Content-Type": "application/json"}
+        })
+        .then(res => res.json())
+        .then(data => console.log(data));
     }
 }

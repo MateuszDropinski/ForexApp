@@ -1,0 +1,108 @@
+import React, { Component } from 'react';
+import { PageSection, Subtitle, TextBlock, Analysis } from '../components';
+
+import { Link } from 'react-router-dom';
+
+import styled from 'styled-components';
+import bannerBackground from '../assets/banner.jpg';
+import { leadingColor } from '../data/style';
+
+import { analysisData } from '../data/analysis';
+
+const MainContainer = styled.main`
+    width:100%;
+    padding-bottom:40px;
+`
+    
+const Banner = styled.div`
+    width:100%;
+    height:120px;
+    background-image:url('${bannerBackground}') ;
+    background-size:cover;
+    background-position:center center;
+    position:relative;
+    margin-bottom:15px;
+`;
+
+const Header = styled.h1`
+    margin:0;
+    color:white;
+    position:absolute;
+    left:15px;
+    top:40%;
+    transform:translate(0,-50%);
+    width:10px;
+    line-height:2.2rem;
+    font-size:2rem;
+    position:relative;
+
+    &:before
+    {
+        width:100px;
+        height:3px;
+        content:"";
+        position:absolute;
+        left:0px;
+        top:100%;
+        background-color:${leadingColor};
+        border-radius:2px;
+        transform:translate(0,5px);
+    }
+`
+
+class MainPage extends Component
+{
+    renderAnalysis(analysis)
+    {
+        const { id, name, correctness, description } = analysis;
+        
+        return <Analysis key={id} name={name} correctness={correctness} description={description} />;
+    }
+    
+    shouldComponentUpdate()
+    {
+        return false;
+    }
+    
+    render()
+    {
+        return(
+            <MainContainer>
+                <Banner>
+                    <Header>Mój Forex</Header>
+                </Banner>
+                <PageSection horizontal="left">
+                    <Subtitle>1. Kilka słów o Forex</Subtitle>
+                    <TextBlock>Forex to nic innego jak rynek walutowy. Jest to również największy na świecie rynek, dzienny obrót to ponad 1,5 biliona dolarów amerykańskich. By móc handlować wystarczą pieniądze, rachunek walutowy i internet. Notowania trwają 24 godziny na dobę przez 5 dni w tygodniu wyłączając święta. Przez przesunięcie czasowe w każdym miejscu giełdy otwierane i zamykane są o różnych godzinach.</TextBlock>
+                    <TextBlock>Kilka ważnych pojęć:</TextBlock>
+                    <TextBlock><strong>- Bid - </strong>jest to cena po której otwierane są zlecenia sprzedaży i zamykane zlecenia kupna,</TextBlock>
+                    <TextBlock><strong>- Ask - </strong>jest to cena po której otwierane są transakcje kupna i zamykane transakcje sprzedaży,</TextBlock>
+                    <TextBlock><strong>- Spread - </strong>różnica między ceną Ask, a Bid. Otwierając pozycję kupna, otwiera się ją po cenie Ask, a zamyka po Bid, w przypadku sprzedaży jest na odwrót,</TextBlock>
+                    <TextBlock><strong>- Lot - </strong>w przypadku par walutowych 1 lot odpowiada 100000 jednostek waluty bazowej,</TextBlock>
+                    <TextBlock><strong>- Pips - </strong>czwarta cyfra po przecinku, w przypadku par z jenem trzecia. Pips cząstkowy to piąta cyfra po przecinku w przypadku par walutowych, oprócz jena,</TextBlock>
+                    <TextBlock><strong>- dźwignia finansowa - </strong>umożliwia kupowanie dużej ilości waluty mając mniej pieniędzy, co zwiększa ryzyko dużych strat i szanse dużych zysków.</TextBlock>
+                </PageSection>
+                <PageSection horizontal="left">
+                    <Subtitle>2. Czym jest ta aplikacja?</Subtitle>
+                    <TextBlock>Jest to aplikacja stworzona przez: <a href="https://github.com/MateuszDropinski">https://github.com/MateuszDropinski</a> w celu połączenia dwóch hobby jakimi są: forex i programowanie. Została ona stworzona głównie w celach edukacyjnych.</TextBlock>
+                    <TextBlock>Co znajduje się na stronie:</TextBlock>
+                    <TextBlock><strong>- pary walutowe - </strong>na dole strony znajduje się wysuwana sekcja z wybranymi przeze mnie sześcioma parami walutowymi, które są aktualizowane w rzeczywistym czasie. Po wybraniu jednej z nich można przejść do podstrony analiz danej waluty. W tym miejscu można również symulować kupno, oraz sprzedaż konkretnych par, aby zamknąć zlecenie trzeba wejść w zakładkę <Link to='/orders'>"Historia zleceń"</Link>. Znajdują się tam aktualnie otwarte zlecenia i te już zamkniętę, pokazane jest jedynie na pipsach czy zlecenie dałoby zysk czy nie,</TextBlock>
+                    <TextBlock><strong>- <Link to="/panel">panel analiz</Link> - </strong>w panelu analiz znajdują się wybrane przez Ciebie analizy, które znajdziesz po kliknięciu w wybraną przez Ciebie parę walutową w panelu par walutowych na dole. Panel analiz zapisuje się dla każdego urządzenia,</TextBlock>
+                    <TextBlock><strong>- <Link to="/orders">historia zleceń</Link> - </strong>w historii zleceń znajdują się zamknięte zlecenia i otwarte, które można tam zamknąć.</TextBlock>
+                </PageSection>
+                <PageSection horizontal="left">
+                    <Subtitle>3. Moje analizy</Subtitle>
+                    <TextBlock>W ramach nauki stworzyłem pięć własnych analiz, które sam wymyśliłem. Później zrobiłem na każdej z 6 par walutowych znajdujących się na stronie testy (100 testów na każdą analizę), a ich wyniki i opisy znajdują się niżej. Określają one procentowo czy w aktualnej godzinie cena powinna wzrosnąć czy zmaleć. Trzeba jednak pamiętać o takich rzeczach jak publikacja różnych danych, wypowiedzi ważnych person, czy też wydarzenia na świecie, które mają duży wpływ na wygląd rynku. Każda para walutowa ma na swojej podstronie generowane te analizy, które można zapisać do panelu analiz, aby mieć konkretne pod ręką.</TextBlock>
+                    <TextBlock>Moje analizy:</TextBlock>
+                    {analysisData.map(analysis => this.renderAnalysis(analysis))}
+                </PageSection>
+                <PageSection horizontal="left">
+                    <Subtitle>4. Ostrzeżenie o ryzyku</Subtitle>
+                    <TextBlock>Handel walutami obcymi na marży wiąże się z wysokim poziomem ryzyka i może nie być odpowiedni dla wszystkich inwestorów. Wysoki stopień dźwigni może działać zarówno przeciwko Tobie, jak i dla Ciebie. Przed podjęciem decyzji o wymianie walutowej należy starannie rozważyć cele inwestycyjne, poziom doświadczenia i apetyt na ryzyko. Istnieje możliwość, że poniesiesz stratę przekraczającą początkową inwestycję. Powinieneś zdawać sobie sprawę z całego ryzyka związanego z obrotem walutami i zasięgnąć porady niezależnego doradcy finansowego, jeśli masz jakiekolwiek wątpliwości.</TextBlock>
+                </PageSection>
+            </MainContainer>        
+        )
+    }    
+}
+
+export default MainPage;

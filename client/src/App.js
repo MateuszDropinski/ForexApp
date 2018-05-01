@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Currencies from './containers/Currencies';
 import Header from './containers/Header';
+import MainPage from './containers/Main_page';
+import CurrencyPage from './containers/Currency_page';
 
 import styled from 'styled-components';
 
@@ -27,6 +29,8 @@ class App extends Component
             <BrowserRouter>
                 <PageContainer>
                     <Route path="/" render={() => (<Header />)}/>
+                    <Route exact path="/" render={() => (<MainPage />)}/>
+                    <Route path="/currency/:id" render={(props) => (<CurrencyPage {...props} />)}/>
                     <Route path="/" render={() => (<Currencies streamData={this.props.streamData}/>)}/>
                 </PageContainer>                
             </BrowserRouter>

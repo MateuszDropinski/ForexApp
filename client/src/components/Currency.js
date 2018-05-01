@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import styled from 'styled-components';
+import { leadingColor } from '../data/style';
 
 const CurrencyContainer = styled(NavLink)`
     padding:5px;
@@ -13,7 +14,7 @@ const CurrencyContainer = styled(NavLink)`
 
     &:hover
     {
-        background-color:rgb(250, 255, 216);
+        background-color:${leadingColor};
     }
 `
 

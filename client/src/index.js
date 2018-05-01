@@ -8,6 +8,7 @@ import thunk from 'redux-thunk';
 import reducers from './reducers';
 
 import { injectGlobal } from 'styled-components';
+import background from './assets/background.png';
 
 const store = createStore(
     reducers,
@@ -27,6 +28,8 @@ injectGlobal`
     {
         font-family: 'Noto Sans', sans-serif;
         margin:0px;
+        background: url(${background});
+        line-height:1.75;
     }
     .active-link
     {

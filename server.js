@@ -60,6 +60,7 @@ function processChunks(chunk)
 
 function getCandles(req, res)
 {
+    console.log(req.body);
     let gettingCandles = request({
         url: `${url}/${req.body.instrument}/candles`,
         qs: {
