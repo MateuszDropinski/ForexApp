@@ -3,6 +3,17 @@ import React from 'react';
 import styled from 'styled-components';
 import { leadingColor } from '../data/style';
 
+const Subtitle = ({ children }) =>
+{
+    return(
+        <Header>
+            {children}
+        </Header>
+    )
+}
+
+export { Subtitle };
+
 const Header = styled.h2`
     margin:15px 0px;
     font-size:1.1rem;
@@ -21,14 +32,3 @@ const Header = styled.h2`
         border-radius:2px;
     }
 `;
-
-const Subtitle = ({ children }) =>
-{
-    return(
-        <Header>
-            {children}
-        </Header>
-    )
-}
-
-export { Subtitle };

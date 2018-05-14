@@ -60,13 +60,12 @@ function processChunks(chunk)
 
 function getCandles(req, res)
 {
-    console.log(req.body);
+    let { granularity, count, instrument } = req.body;
     let gettingCandles = request({
-        url: `${url}/${req.body.instrument}/candles`,
+        url: `${url}/${instrument}/candles`,
         qs: {
-            granularity: "H1",
-            count: "10",
-            price:"BA"
+            granularity,
+            count
         },
         headers: {
             Authorization: `Bearer ${accessToken}`

@@ -1,68 +1,63 @@
 import React, { Component } from 'react';
 
-import styled from 'styled-components';
-import { leadingColor } from '../data/style';
+import { Percentages, Bar, AnalysisContainer, Title, Correctness, Description } from './styles/analysis';
 
-const AnalysisContainer = styled.article`
-    width:100%;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    padding:15px 20px;
-    margin:10px 0px;
-    display:grid;
-    grid-template: 50px 100px ${props => props.height ? "100px" : "0px"} / 50% 50%;
-    border:1px solid ${leadingColor};
-    border-radius:2px;
-`;
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { getAnalysis } from '../actions';
 
-const Title = styled.h3`
-    margin:0px;
-    font-size:1rem;
-    display:flex;
-    align-items:center;
-`;
-
-const Correctness = styled.p`
-    margin:0px;
-    font-size:.8rem;
-    display:flex;
-    align-items:center;
-    justify-content:flex-end;
-`;
-
-const Description = styled.p`
-    margin:0px;
-    font-size:.75rem;
-    grid-column-start:1;
-    grid-column-end:3;
-    display:flex;
-    align-items:center;
-`;
+import { analysisData } from '../data/analysis';
 
 class Analysis extends Component
-{
-    // props = { currency, id_analizy }
-    
-    constructor()
+{   
+    componentWillReceiveProps(newProps)
     {
-        super();
+        if(!newProps[newProps.currency][newProps.id])
+        {
+            const { candles, algorithm } = analysisData[newProps.id];
+            this.props.getAnalysis(candles, newProps.currency, algorithm, newProps.id);
+        }            
+    }
+    
+    componentDidMount()
+    {
+        if(this.props.currency)
+        {
+            const { candles, algorithm } = analysisData[this.props.id];
+            
+            this.props.getAnalysis(candles, this.props.currency, algorithm, this.props.id);
+        }        
     }
     
     renderPercentages()
     {
-        if(this.props.currency)
+        let { currency, id } = this.props;
+        
+        if(currency)
         {
-            return <p >{this.props.currency}</p>    
+            if(this.props[currency][id])
+            {
+                let { up, down } = this.props[currency][id];
+                return (
+                    <Percentages>
+                        <Bar percentage={up} />
+                        <Bar percentage={down} />
+                    </Percentages>
+                );
+            }                  
+            else return <p>Ładowanie...</p>
         }
         else return null;        
     }
     
     render()
     {
-        let { name, correctness, currency, description } = this.props;
+        const { name, correctness, description } = analysisData[this.props.id];
+        const currency = this.props.currency ? this.props.currency : "all";
         return(
-            <AnalysisContainer height={currency ? true : undefined}>
+            <AnalysisContainer currency={currency!=="all" ? true : undefined}>
                 <Title>"{name}"</Title>
-                <Correctness>Trafność: {currency ? correctness[currency] : correctness["all"]}</Correctness>
+                <Correctness>Trafność: {correctness[currency]}</Correctness>
                 <Description>Opis: {description}</Description>
                 {this.renderPercentages()}
             </AnalysisContainer>
@@ -70,4 +65,16 @@ class Analysis extends Component
     }
 }
 
-export { Analysis }
+function mapDispatchToProps(dispatch)
+{
+    return bindActionCreators({ getAnalysis }, dispatch);
+}
+
+function mapStateToProps({ analysis })
+{
+    return analysis;
+}
+
+const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(Analysis);
+
+export { connectedComponent as Analysis };

@@ -1,28 +1,80 @@
 import React, { Component } from 'react';
 
+import { PageContainer, Chart, PageSection, TextBlock, Subtitle, Analysis } from '../components';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { getChart } from '../actions';
+
+import styled from 'styled-components';
+
+import { analysisData } from '../data/analysis';
+
 class CurrencyPage extends Component
-{
-    shouldComponentUpdate(nextProps)
+{    
+    componentWillReceiveProps(newProps)
     {
-        const currency = this.props.match.params.id;
-        if(currency === nextProps.match.params.id)    
-        return false;
-        else
-        return true;
+        let oldCurrency = this.props.id,
+            newCurrency = newProps.id;
+        
+        if(!newProps[newCurrency].length && oldCurrency !== newCurrency)
+        {
+            this.props.getChart(newCurrency);   
+        }
     }
     
-    componentWillMount()
+    componentDidMount()
     {
+        let currency = this.props.id;
         
+        if(!this.props[currency].length)
+            this.props.getChart(currency);
+    }
+    
+    renderChart()
+    {        
+        if(this.props.error)
+            return <p>{this.props.error}</p>
+        else if(!this.props[this.props.id].length)
+            return <p>Ładowanie...</p>
+        else 
+            return (
+                <Chart data={this.props[this.props.id]}/>
+            );
+    }
+    
+    renderAnalysis(analysis)
+    {
+        return <Analysis id={analysis.id} key={analysis.id} currency={this.props.id}/>
     }
     
     render()
     {
-        console.log(this.props.match.params.id);
         return(
-            <p>Currency</p>
+            <PageContainer>
+                <PageSection>
+                    <Subtitle>{this.props.id.split('_').join(' ')}</Subtitle>
+                </PageSection>                   
+                <PageSection>
+                   {this.renderChart()} 
+                    <TextBlock align="center" size=".6rem">Wykres ceny {this.props.id.split('_').join(' ')} z ostatnich 30 dni.</TextBlock>  
+                </PageSection>    
+                <PageSection>
+                    {analysisData.map(analysis => this.renderAnalysis(analysis))}
+                </PageSection>
+            </PageContainer>
         )
     }
 }
 
-export default CurrencyPage;
+function mapDispatchToProps(dispatch)
+{
+    return bindActionCreators({getChart}, dispatch);
+}
+
+function mapStateToProps({ charts })
+{
+    return charts;
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CurrencyPage);

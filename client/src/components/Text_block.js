@@ -2,20 +2,20 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-const Paragraph = styled.p`
-    margin:10px 0px;
-    font-size:.8rem;
-    width:100%;
-    text-align:${props => props.align};
-`;
-
-const TextBlock = ({ children, align }) =>
+const TextBlock = ({ children, align, size }) =>
 {
     return(
-        <Paragraph align={ align || "left" }>
+        <Paragraph align={ align || "left" } size={ size || ".8rem" }>
             {children}
         </Paragraph>
     )
 }
 
 export { TextBlock };
+
+const Paragraph = styled.p`
+    margin:10px 0px;
+    font-size:${props => props.size};
+    width:100%;
+    text-align:${props => props.align};
+`;

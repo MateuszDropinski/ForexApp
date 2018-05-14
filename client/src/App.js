@@ -30,7 +30,7 @@ class App extends Component
                 <PageContainer>
                     <Route path="/" render={() => (<Header />)}/>
                     <Route exact path="/" render={() => (<MainPage />)}/>
-                    <Route path="/currency/:id" render={(props) => (<CurrencyPage {...props} />)}/>
+                    <Route path="/currency/:id" render={props => <CurrencyPage id={props.match.params.id} />}/>
                     <Route path="/" render={() => (<Currencies streamData={this.props.streamData}/>)}/>
                 </PageContainer>                
             </BrowserRouter>

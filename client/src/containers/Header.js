@@ -4,6 +4,24 @@ import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { leadingColor } from '../data/style';
 
+class Header extends Component
+{   
+    render()
+    {    
+        return(
+            <MainHeader>
+                <Menu>
+                    <StyledLink activeClassName="active-link" exact to="/">Strona główna</StyledLink>
+                    <StyledLink activeClassName="active-link" to="/panel">Panel analiz</StyledLink>
+                    <StyledLink activeClassName="active-link" to="/orders">Historia zleceń</StyledLink>
+                </Menu>
+            </MainHeader>
+        )
+    }
+}
+
+export default Header;
+
 const MainHeader = styled.header`
     padding:15px;
     background-color:#000000;
@@ -47,21 +65,3 @@ const StyledLink = styled(NavLink)`
         left:0px;
     }
 `;
-
-class Header extends Component
-{   
-    render()
-    {    
-        return(
-            <MainHeader>
-                <Menu>
-                    <StyledLink activeClassName="active-link" exact to="/">Strona główna</StyledLink>
-                    <StyledLink activeClassName="active-link" to="/panel">Panel analiz</StyledLink>
-                    <StyledLink activeClassName="active-link" to="/orders">Historia zleceń</StyledLink>
-                </Menu>
-            </MainHeader>
-        )
-    }
-}
-
-export default Header;
