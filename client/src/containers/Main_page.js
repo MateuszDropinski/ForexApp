@@ -3,9 +3,7 @@ import { PageContainer, PageSection, Subtitle, TextBlock, Analysis } from '../co
 
 import { Link } from 'react-router-dom';
 
-import styled from 'styled-components';
-import bannerBackground from '../assets/banner.jpg';
-import { leadingColor } from '../data/style';
+import { Banner, Header } from './styles/main_page';
 
 import { analysisData } from '../data/analysis';
 
@@ -49,7 +47,7 @@ class MainPage extends Component
                 </PageSection>
                 <PageSection horizontal="left">
                     <Subtitle>3. Moje analizy</Subtitle>
-                    <TextBlock>W ramach nauki stworzyłem pięć własnych analiz, które sam wymyśliłem. Później zrobiłem na każdej z 6 par walutowych znajdujących się na stronie testy (600 testów na każdą analizę), a ich wyniki i opisy znajdują się niżej. Określają one procentowo czy w aktualnej godzinie cena powinna wzrosnąć czy zmaleć (zielony pasek - wzrost, czerwony pasek - spadek). Trzeba jednak pamiętać o takich rzeczach jak publikacja różnych danych, wypowiedzi ważnych person, czy też wydarzenia na świecie, które mają duży wpływ na wygląd rynku. Każda para walutowa ma na swojej podstronie generowane te analizy, które można zapisać do panelu analiz, aby mieć konkretne pod ręką.</TextBlock>
+                    <TextBlock>W ramach nauki stworzyłem pięć własnych analiz, które sam wymyśliłem. Określają one procentowo czy cena powinna wzrosnąć czy zmaleć (zielony pasek - wzrost, czerwony pasek - spadek). Trzeba jednak pamiętać o takich rzeczach jak publikacja różnych danych, wypowiedzi ważnych person, czy też wydarzenia na świecie, które mają duży wpływ na wygląd rynku. Każda para walutowa ma na swojej podstronie generowane te analizy, które można zapisać do panelu analiz, aby mieć konkretne pod ręką.</TextBlock>
                     <TextBlock>Moje analizy:</TextBlock>
                     {analysisData.map(analysis => this.renderAnalysis(analysis))}
                 </PageSection>
@@ -63,38 +61,3 @@ class MainPage extends Component
 }
 
 export default MainPage;
-
-const Banner = styled.div`
-    width:100%;
-    height:120px;
-    background-image:url('${bannerBackground}') ;
-    background-size:cover;
-    background-position:center center;
-    position:relative;
-`;
-
-const Header = styled.h1`
-    margin:0;
-    color:white;
-    position:absolute;
-    left:15px;
-    top:40%;
-    transform:translate(0,-50%);
-    width:10px;
-    line-height:2.2rem;
-    font-size:2rem;
-    position:relative;
-
-    &:before
-    {
-        width:100px;
-        height:3px;
-        content:"";
-        position:absolute;
-        left:0px;
-        top:100%;
-        background-color:${leadingColor};
-        border-radius:2px;
-        transform:translate(0,5px);
-    }
-`

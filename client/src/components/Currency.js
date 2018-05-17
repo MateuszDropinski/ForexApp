@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { NavLink } from 'react-router-dom';
+
+import { CurrencyContainer, Instrument, Paragraph } from './styles/currency';
 
 class Currency extends Component
 {

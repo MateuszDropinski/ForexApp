@@ -1,7 +1,8 @@
 import styled from 'styled-components';
-import { leadingColor } from '../data/style';
+import { leadingColor } from '../../data/style';
+import { NavLink } from 'react-router-dom';
 
-const CurrencyContainer = styled(NavLink)`
+export const CurrencyContainer = styled(NavLink)`
     padding:5px;
     border:1px solid gray;
     background-color:#ffffff;
@@ -15,11 +16,11 @@ const CurrencyContainer = styled(NavLink)`
     }
 `
 
-const Instrument = styled.h3`
+export const Instrument = styled.h3`
     margin:0px;
     font-size:.8rem;
 `
-const Paragraph = styled.p`
+export const Paragraph = styled.p`
     margin:2px 0px;
     font-size:.7rem;
     span

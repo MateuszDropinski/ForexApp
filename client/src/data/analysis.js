@@ -25,7 +25,7 @@ const priceAnalysis = (candles) =>
         difference = close - average,
         up, down;
     
-    let actualDiff = (difference < 0) ? downDiff : upDiff;    
+    let actualDiff = ((difference < 0) ? downDiff : upDiff)*2;    
     
     up = (50 - (difference/actualDiff)).toFixed();
     down = (100 - parseInt(up)).toFixed();
@@ -48,15 +48,6 @@ export const analysisData = [
     {
         id: 0,
         name: "Cena",
-        correctness: {
-            all: "75%",
-            EUR_USD: "50%",
-            GBP_JPY: "50%",
-            GBP_USD: "50%",
-            USD_JPY: "50%",
-            EUR_GBP: "50%",
-            EUR_JPY: "50%"
-        },
         description: "Na podstawie świec jedno godzinowych OHLC (nie licząc aktualnej) z ostatnich 30 dni określane jest czy aktualna cena jest niska czy wysoka.",
         candles: {
             granularity: "H1",

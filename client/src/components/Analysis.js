@@ -52,12 +52,11 @@ class Analysis extends Component
     
     render()
     {
-        const { name, correctness, description } = analysisData[this.props.id];
+        const { name, description } = analysisData[this.props.id];
         const currency = this.props.currency ? this.props.currency : "all";
         return(
             <AnalysisContainer currency={currency!=="all" ? true : undefined}>
                 <Title>"{name}"</Title>
-                <Correctness>Trafność: {correctness[currency]}</Correctness>
                 <Description>Opis: {description}</Description>
                 {this.renderPercentages()}
             </AnalysisContainer>
