@@ -16,6 +16,7 @@ class MainPage extends Component
     
     shouldComponentUpdate()
     {
+        console.log('ss');
         return false;
     }
     
@@ -47,7 +48,7 @@ class MainPage extends Component
                 </PageSection>
                 <PageSection horizontal="left">
                     <Subtitle>3. Moje analizy</Subtitle>
-                    <TextBlock>W ramach nauki stworzyłem pięć własnych analiz, które sam wymyśliłem. Określają one procentowo czy cena powinna wzrosnąć czy zmaleć (zielony pasek - wzrost, czerwony pasek - spadek). Trzeba jednak pamiętać o takich rzeczach jak publikacja różnych danych, wypowiedzi ważnych person, czy też wydarzenia na świecie, które mają duży wpływ na wygląd rynku. Każda para walutowa ma na swojej podstronie generowane te analizy, które można zapisać do panelu analiz, aby mieć konkretne pod ręką.</TextBlock>
+                    <TextBlock>W ramach nauki stworzyłem pięć własnych analiz, które sam wymyśliłem. Określają one procentowo czy cena powinna wzrosnąć czy zmaleć (zielony pasek - wzrost, czerwony pasek - spadek). Trzeba jednak pamiętać o takich rzeczach jak duża nieprzewidywalność rynku, publikacja różnych danych, wypowiedzi ważnych person, wydarzenia na świecie, które mają duży wpływ na wygląd rynku. Każda para walutowa ma na swojej podstronie generowane te analizy, które można zapisać do panelu analiz, aby mieć konkretne pod ręką. Odświeżają się same co godzinę i określają wzrost, lub spadek na podstawie ceny zamknięcia w ostatniej godzinie.</TextBlock>
                     <TextBlock>Moje analizy:</TextBlock>
                     {analysisData.map(analysis => this.renderAnalysis(analysis))}
                 </PageSection>

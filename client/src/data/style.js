@@ -1,1 +1,1 @@
-export const leadingColor = "gold";
+export const leadingColor = "#ede51a";

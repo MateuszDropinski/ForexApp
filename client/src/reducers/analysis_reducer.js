@@ -16,6 +16,7 @@ export default function(state = {
                 ...state,
                 [action.payload.currency]: 
                 {
+                    ...state[action.payload.currency],
                     [action.payload.id]: {...action.payload.result}
                 }                    
             }

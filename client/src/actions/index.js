@@ -81,6 +81,6 @@ export function getAnalysis(candles, currency, algorithm, id)
             headers: {"Content-Type": "application/json"}
         })
         .then(res => res.json())
-        .then(data => dispatch(sendData({type: ANALYSIS, data: { result: algorithm(data.candles), id, currency}})));
+        .then(data => {data.candles.splice(-1,1); dispatch(sendData({type: ANALYSIS, data: { result: algorithm(data.candles), id, currency}}))});
     }
 }

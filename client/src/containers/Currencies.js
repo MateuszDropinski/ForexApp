@@ -3,6 +3,10 @@ import { Currency } from '../components';
 
 import { CurrenciesContainer, ExpandBar } from './styles/currencies';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { startStream } from '../actions';
+
 class Currencies extends Component
 {
     constructor()
@@ -10,6 +14,11 @@ class Currencies extends Component
         super()
         
         this.state = { show: false };
+    }
+    
+    componentDidMount()
+    {
+        this.props.startStream();
     }
     
     renderCurrencies()
@@ -33,4 +42,14 @@ class Currencies extends Component
     }
 }
 
-export default Currencies;
+function mapDispatchToProps(dispatch)
+{
+    return bindActionCreators({startStream}, dispatch);
+}
+
+function mapStateToProps(state)
+{
+    return state;
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Currencies);

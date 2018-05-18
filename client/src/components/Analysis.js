@@ -12,7 +12,7 @@ class Analysis extends Component
 {   
     componentWillReceiveProps(newProps)
     {
-        if(!newProps[newProps.currency][newProps.id])
+        if(newProps[newProps.currency] && !newProps[newProps.currency][newProps.id])
         {
             const { candles, algorithm } = analysisData[newProps.id];
             this.props.getAnalysis(candles, newProps.currency, algorithm, newProps.id);
@@ -55,9 +55,9 @@ class Analysis extends Component
         const { name, description } = analysisData[this.props.id];
         const currency = this.props.currency ? this.props.currency : "all";
         return(
-            <AnalysisContainer currency={currency!=="all" ? true : undefined}>
+            <AnalysisContainer>
                 <Title>"{name}"</Title>
-                <Description>Opis: {description}</Description>
+                <Description show={ description ? "block" : "none" }>Opis: {description}</Description>
                 {this.renderPercentages()}
             </AnalysisContainer>
         )
