@@ -51,7 +51,10 @@ function processChunks(chunk)
     const data = chunk.toString();
     
     if(ws && initialSnapshots.length > 0)   
-        initialSnapshots.forEach(() =>  ws.send(initialSnapshots.pop()));
+        initialSnapshots.forEach(() =>  {
+            console.log(initialSnapshots[initialSnapshots.length-1]);
+            ws.send(initialSnapshots.pop());
+        });
     else if(ws)
         ws.send(data);
     else 

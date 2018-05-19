@@ -15,7 +15,7 @@ const priceAnalysis = (candles) =>
         highest = candles[0].mid.h,
         lowest = candles[0].mid.l;
     
-    candles.map(item => {
+    candles.forEach(item => {
         let { h, l } = item.mid,
             high = parseFloat(h),
             low = parseFloat(l),
@@ -36,8 +36,8 @@ const priceAnalysis = (candles) =>
     
     let percentage = { up:0, down:0 };
     
-    percentage.up = (50 - (inclination/actualDiff)).toFixed();
-    percentage.down = (100 - parseInt(percentage.up)).toFixed();
+    percentage.up = parseInt(50 - (inclination/actualDiff), 10);
+    percentage.down = (100 - percentage.up);
     
     return checkPercentage(percentage);
 }
@@ -56,7 +56,7 @@ const tunnelAnalysis = (candles) =>
         return (((ya-yb)/(xa-xb))*x)+(ya-(((ya-yb)/(xa-xb))*xa));
     }
     
-    candles.map((item, index) => {
+    candles.forEach((item, index) => {
         if(index < 25)
         {
             let high = item.mid.h,
@@ -78,8 +78,8 @@ const tunnelAnalysis = (candles) =>
     
     let percentage = { up:0, down:0 };
     
-    percentage.up = (50 - (inclination / diff)).toFixed();
-    percentage.down = (100 - parseInt(percentage.up)).toFixed();
+    percentage.up = parseInt(50 - (inclination / diff), 10);
+    percentage.down = (100 - percentage.up);
     
     return checkPercentage(percentage);
 }
@@ -88,8 +88,7 @@ const powerAnalysis = (candles) =>
 {
     candles.splice(-1,1);
     
-    let close = parseFloat(candles[candles.length-1].mid.c),
-        hossa = new Array(), bessa = new Array(), last = false, actual;
+    let hossa = [], bessa = [], last = false, actual;
     
     const checkDirection = (open, close) => {
         if(open > close) return "down";
@@ -97,7 +96,7 @@ const powerAnalysis = (candles) =>
         else return false;
     }
     
-    candles.map((item, index) => {
+    candles.forEach((item, index) => {
         let direction = checkDirection(item.mid.o, item.mid.c);
         if(!last && direction === "down")
             bessa.push(item.mid.o-item.mid.c);
@@ -128,8 +127,8 @@ const powerAnalysis = (candles) =>
     
     if(actual === "up")
     {
-        percentage.up = (50 - ((lastHossa - averageHossa) / hossaDiff)).toFixed();
-        percentage.down = (100 - parseInt(percentage.up)).toFixed();
+        percentage.up = parseInt(50 - ((lastHossa - averageHossa) / hossaDiff));
+        percentage.down = (100 - percentage.up);
     }
     else
     {
@@ -137,6 +136,33 @@ const powerAnalysis = (candles) =>
         percentage.down = (100 - parseInt(percentage.up)).toFixed();
     }
 
+    return checkPercentage(percentage);
+}
+
+const hoursAnalysis = (candles) =>
+{
+    let closeHour = new Date(candles.pop().time).getHours(),
+        highest = 0, lowest = 0, candlesSum = 0, candlesAmount = 0;
+    
+    candles.forEach((item, index) => {
+        let candleHour = new Date(item.time).getHours();
+        if(candleHour === closeHour + 1)
+        {
+            let afterHourMovement = candles[index+2].mid.c - item.mid.o;
+            highest = (highest < afterHourMovement) ? afterHourMovement : highest;
+            lowest = (lowest > afterHourMovement) ? afterHourMovement : lowest;
+            candlesSum += afterHourMovement;
+            candlesAmount++;
+        }
+    });
+    
+    let average = candlesSum/candlesAmount,
+        diff = (average > 0) ? highest / 50 : lowest / 50,
+        percentage = { up: 0, down: 0 };
+    
+    percentage.up = parseInt(50 + (average * (-1))/diff);
+    percentage.down = 100 - percentage.up;
+    
     return checkPercentage(percentage);
 }
 
@@ -164,11 +190,21 @@ export const analysisData = [
     {
         id:2,
         name: "Siła Hossy/Bessy",
-        description: "Na podstawie świec jednogodzinnych OHLC z ostatnich 30 dni (nie licząc aktualnej), liczona jest średnia wielkość wzrostów i spadków, oraz określana szansa na dalszą kontynuacje trendu.",
+        description: "Na podstawie świec jednogodzinnych OHLC z ostatnich 5 dni (nie licząc aktualnej), liczona jest średnia wielkość wzrostów i spadków, oraz określana szansa na dalszą kontynuacje trendu.",
+        candles: {
+            granularity: "H1",
+            count: 121
+        },
+        algorithm: powerAnalysis
+    },
+    {
+        id:3,
+        name: "Godziny",
+        description: "Na podstawie zachowania wykresu o określonych godzinach w ostatnich 30 dniach, obliczane jest aktualne prawdopodobieństwo konkretnego ruchu.",
         candles: {
             granularity: "H1",
             count: 721
         },
-        algorithm: powerAnalysis
+        algorithm: hoursAnalysis
     }
 ];
