@@ -35,7 +35,7 @@ class Analysis extends Component
         
         if(currency)
         {
-            if(this.props[currency][id])
+            if(this.props[currency][id] && this.props[currency][id] !== "Loading")
             {
                 let { up, down } = this.props[currency][id];
                 return (

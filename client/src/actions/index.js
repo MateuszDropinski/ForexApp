@@ -15,12 +15,21 @@ export const PRICE = "PRICE";
 export const CHART = "CHART";
 export const ERROR = "ERROR";
 export const ANALYSIS = "ANALYSIS";
+export const LOADING = "LOADING";
 
-export function sendData(data)
+export function sendData({ type, data })
 {   
     return {
-        type:data.type,
-        payload:data.data
+        type:type,
+        payload:data
+    }
+}
+
+export function sendingRequest(data)
+{
+    return {
+        type: LOADING,
+        payload: data
     }
 }
 
@@ -75,12 +84,14 @@ export function getAnalysis(candles, currency, algorithm, id)
     
     return dispatch =>
     {
+        dispatch(sendingRequest({currency, id}));
+        
         fetch("/api/getcandles", {
             method: "post",
             body: JSON.stringify(candles),
             headers: {"Content-Type": "application/json"}
         })
         .then(res => res.json())
-        .then(data => {data.candles.splice(-1,1); dispatch(sendData({type: ANALYSIS, data: { result: algorithm(data.candles), id, currency}}))});
+        .then(data =>  dispatch(sendData({type: ANALYSIS, data: { result: algorithm(data.candles), id, currency}})));
     }
 }

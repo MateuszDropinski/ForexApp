@@ -11,6 +11,15 @@ export default function(state = {
 {
     switch(action.type)
     {
+        case actions.LOADING:
+            return {
+                ...state,
+                [action.payload.currency]:
+                {
+                    ...state[action.payload.currency],
+                    [action.payload.id]: "Loading"
+                }
+            }
         case actions.ANALYSIS:            
             return {
                 ...state,

@@ -1,5 +1,15 @@
+const checkPercentage = (percentage) =>
+{
+    percentage = (percentage.up >= 100) ? { up: 99, down:1 } : percentage;
+    percentage = (percentage.down >= 100) ? { down: 99, up:1 } : percentage;
+    
+    return percentage;
+}
+
 const priceAnalysis = (candles) =>
 {
+    candles.splice(-1,1);
+    
     let close = parseFloat(candles[candles.length-1].mid.c),
         candlesSum = 0,
         highest = candles[0].mid.h,
@@ -29,57 +39,55 @@ const priceAnalysis = (candles) =>
     percentage.up = (50 - (inclination/actualDiff)).toFixed();
     percentage.down = (100 - parseInt(percentage.up)).toFixed();
     
-    percentage = (percentage.up === 100) ? { up: 99, down:1 } : percentage;
-    percentage = (percentage.down === 100) ? { down: 99, up:1 } : percentage;
-    
-    return percentage;
+    return checkPercentage(percentage);
 }
 
 const tunnelAnalysis = (candles) =>
 {
     let highest = [candles[0].mid.h, 0],
         lowest = [candles[0].mid.l, 0],
-        startCandle, endCandle = candles[candles.length-1],
-        close = parseFloat(candles[candles.length-1].mid.c);
+        startCandle, close = parseFloat(candles.pop().mid.c);
     
-    const findPoint = (ya, yb) =>
+    let endCandle = candles[candles.length-1]
+    
+    const findPoint = (ya, yb, xa) =>
     {
-        let x = candles.length+1, xa = 1, xb = candles.length;
-        return ((ya*xb) - (yb*xa) + (yb*x) - (yb*xa) - (ya*x) + (ya*xa))/(xb-xa);
+        let x = candles.length + 1, xb = candles.length;
+        return (((ya-yb)/(xa-xb))*x)+(ya-(((ya-yb)/(xa-xb))*xa));
     }
     
     candles.map((item, index) => {
-        if(index < 125)
+        if(index < 25)
         {
             let high = item.mid.h,
             low = item.mid.l;
-
+            
             highest = (high > highest[0]) ? [high,index] : highest;
             lowest = (low < lowest[0]) ? [low,index] : lowest;
         }        
     });
     
-    startCandle = (highest[1] < lowest[1]) ? candles[highest[1]] : candles[lowest[1]];
+    let startCandleIndex = (highest[1] < lowest[1]) ? highest[1] : lowest[1];
+    startCandle = candles[startCandleIndex];
     
-    let average = findPoint((startCandle.mid.h*1+startCandle.mid.l*1)/2,(endCandle.mid.h*1+endCandle.mid.l*1)/2)
+    let average = findPoint(((startCandle.mid.h * 1) + (startCandle.mid.l * 1)) / 2, ((endCandle.mid.h * 1) + (endCandle.mid.l * 1)) / 2, startCandleIndex);
     
-    let diff = (findPoint(startCandle.mid.h,endCandle.mid.h)-average) / 25;
+    let diff = (findPoint(startCandle.mid.h * 1, endCandle.mid.h * 1, startCandleIndex ) - average) / 25;
     
     let inclination = close - average;
     
     let percentage = { up:0, down:0 };
     
-    percentage.up = (50 - (inclination/diff)).toFixed();
+    percentage.up = (50 - (inclination / diff)).toFixed();
     percentage.down = (100 - parseInt(percentage.up)).toFixed();
     
-    percentage = (percentage.up === 100) ? { up: 99, down:1 } : percentage;
-    percentage = (percentage.down === 100) ? { down: 99, up:1 } : percentage;
-    
-    return percentage;
+    return checkPercentage(percentage);
 }
 
 const powerAnalysis = (candles) =>
 {
+    candles.splice(-1,1);
+    
     let close = parseFloat(candles[candles.length-1].mid.c),
         hossa = new Array(), bessa = new Array(), last = false, actual;
     
@@ -108,11 +116,28 @@ const powerAnalysis = (candles) =>
     });
     
     let averageBessa = bessa.reduce((sum, x) => sum + x)/bessa.length,
-        averageHossa = hossa.reduce((sum, x) => sum + x)/hossa.length;
+        averageHossa = hossa.reduce((sum, x) => sum + x)/hossa.length,
+        lastBessa = bessa[bessa.length-1],
+        lastHossa = hossa[hossa.length-1],
+        maxBessa = bessa.sort((a,b) => {return a-b})[bessa.length-1],
+        maxHossa = hossa.sort((a,b) => {return a-b})[hossa.length-1],
+        bessaDiff = (maxBessa - averageBessa) / 40,
+        hossaDiff = (maxHossa - averageHossa) / 40;
     
-    console.log(actual);
+    let percentage = { up:0, down:0 };
     
-    return { up: 50, down:50 }
+    if(actual === "up")
+    {
+        percentage.up = (50 - ((lastHossa - averageHossa) / hossaDiff)).toFixed();
+        percentage.down = (100 - parseInt(percentage.up)).toFixed();
+    }
+    else
+    {
+        percentage.up = (50 + ((lastBessa - averageBessa) / bessaDiff)).toFixed();
+        percentage.down = (100 - parseInt(percentage.up)).toFixed();
+    }
+
+    return checkPercentage(percentage);
 }
 
 export const analysisData = [

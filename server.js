@@ -65,7 +65,10 @@ function getCandles(req, res)
         url: `${url}/${instrument}/candles`,
         qs: {
             granularity,
-            count
+            count,
+            dailyAlignment: 0,
+            alignmentTimezone: "Europe/Berlin"
+            
         },
         headers: {
             Authorization: `Bearer ${accessToken}`
