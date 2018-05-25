@@ -52,7 +52,6 @@ function processChunks(chunk)
     
     if(ws && initialSnapshots.length > 0)   
         initialSnapshots.forEach(() =>  {
-            console.log(initialSnapshots[initialSnapshots.length-1]);
             ws.send(initialSnapshots.pop());
         });
     else if(ws)

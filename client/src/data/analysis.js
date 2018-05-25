@@ -6,6 +6,12 @@ const checkPercentage = (percentage) =>
     return percentage;
 }
 
+const checkDirection = (open, close) => {
+    if(open > close) return "down";
+    else if(close > open) return "up";
+    else return "nothing";
+}
+
 const priceAnalysis = (candles) =>
 {
     candles.splice(-1,1);
@@ -28,8 +34,8 @@ const priceAnalysis = (candles) =>
     });
     
     let average = candlesSum/(candles.length),
-        upDiff = (highest - average) / 50,
-        downDiff = (average - lowest) / 50,
+        upDiff = (highest - average) / 40,
+        downDiff = (average - lowest) / 40,
         inclination = close - average;
     
     let actualDiff = ((inclination < 0) ? downDiff : upDiff)*2;    
@@ -46,13 +52,13 @@ const tunnelAnalysis = (candles) =>
 {
     let highest = [candles[0].mid.h, 0],
         lowest = [candles[0].mid.l, 0],
-        startCandle, close = parseFloat(candles.pop().mid.c);
+        startCandle, close = parseFloat(candles.pop().mid.c), startCandleIndex, highestDeflection = 0,
+        endCandle = candles[candles.length - 1], percentage = { up: 0, down: 0 };
     
-    let endCandle = candles[candles.length-1]
-    
-    const findPoint = (ya, yb, xa) =>
+    const findPoint = x =>
     {
-        let x = candles.length + 1, xb = candles.length;
+        let xa = startCandleIndex + 1, xb = candles.length, ya = (((startCandle.mid.h * 1) + (startCandle.mid.l * 1))) / 2,
+            yb = ((endCandle.mid.h * 1) + (endCandle.mid.l * 1)) / 2;
         return (((ya-yb)/(xa-xb))*x)+(ya-(((ya-yb)/(xa-xb))*xa));
     }
     
@@ -67,18 +73,24 @@ const tunnelAnalysis = (candles) =>
         }        
     });
     
-    let startCandleIndex = (highest[1] < lowest[1]) ? highest[1] : lowest[1];
+    startCandleIndex = (highest[1] > lowest[1]) ? highest[1] : lowest[1];
     startCandle = candles[startCandleIndex];
     
-    let average = findPoint(((startCandle.mid.h * 1) + (startCandle.mid.l * 1)) / 2, ((endCandle.mid.h * 1) + (endCandle.mid.l * 1)) / 2, startCandleIndex);
+    candles.forEach((item, index) => {
+        if(index >= startCandleIndex)
+        {
+            let deflection, high = item.mid.h * 1, low = item.mid.l * 1;
+            if(index < candles.length - 1 && index > startCandleIndex)
+                deflection = (high - findPoint(index) > findPoint(index) - low) ? high - findPoint(index) : findPoint(index) - low;
+            else
+                deflection = high - ((high + low) / 2) > low - ((high + low) / 2) ? high - ((high + low) / 2) : ((high + low) / 2) - low;
+            highestDeflection = highestDeflection < deflection ? deflection : highestDeflection;  
+        }                                                                                                              
+    });
     
-    let diff = (findPoint(startCandle.mid.h * 1, endCandle.mid.h * 1, startCandleIndex ) - average) / 25;
-    
-    let inclination = close - average;
-    
-    let percentage = { up:0, down:0 };
-    
-    percentage.up = parseInt(50 - (inclination / diff), 10);
+    let average = findPoint(candles.length + 1);   
+    let diff = highestDeflection / 10;    
+    percentage.up = parseInt(50 - ((close - average) / diff), 10);
     percentage.down = (100 - percentage.up);
     
     return checkPercentage(percentage);
@@ -88,13 +100,7 @@ const powerAnalysis = (candles) =>
 {
     candles.splice(-1,1);
     
-    let hossa = [], bessa = [], last = false, actual;
-    
-    const checkDirection = (open, close) => {
-        if(open > close) return "down";
-        else if(close > open) return "up";
-        else return false;
-    }
+    let hossa = [], bessa = [], last = false, actual, percentage = { up: 0, down: 0 };
     
     candles.forEach((item, index) => {
         let direction = checkDirection(item.mid.o, item.mid.c);
@@ -110,30 +116,30 @@ const powerAnalysis = (candles) =>
             hossa.push(item.mid.c-item.mid.o);
         else if(last === "down" && direction === "down")
             bessa[bessa.length-1]+=(item.mid.o-item.mid.c);
-        if(direction) actual = direction;
+        if(direction !== "nothing") actual = direction;
         last = direction;
     });
     
-    let averageBessa = bessa.reduce((sum, x) => sum + x)/bessa.length,
-        averageHossa = hossa.reduce((sum, x) => sum + x)/hossa.length,
-        lastBessa = bessa[bessa.length-1],
-        lastHossa = hossa[hossa.length-1],
-        maxBessa = bessa.sort((a,b) => {return a-b})[bessa.length-1],
-        maxHossa = hossa.sort((a,b) => {return a-b})[hossa.length-1],
-        bessaDiff = (maxBessa - averageBessa) / 40,
-        hossaDiff = (maxHossa - averageHossa) / 40;
-    
-    let percentage = { up:0, down:0 };
-    
     if(actual === "up")
     {
-        percentage.up = parseInt(50 - ((lastHossa - averageHossa) / hossaDiff));
+        let lastHossa = hossa.pop(),
+            averageHossa = hossa.reduce((sum, x) => sum + x)/hossa.length,
+            maxHossa = hossa.sort((a,b) => {return a-b})[hossa.length-1],
+            hossaDiff = (maxHossa - averageHossa) / 25;
+        
+        percentage.up = parseInt(50 - ((lastHossa - averageHossa) / hossaDiff), 10);
         percentage.down = (100 - percentage.up);
+        
     }
     else
     {
-        percentage.up = (50 + ((lastBessa - averageBessa) / bessaDiff)).toFixed();
-        percentage.down = (100 - parseInt(percentage.up)).toFixed();
+        let lastBessa = bessa.pop(),
+            averageBessa = bessa.reduce((sum, x) => sum + x)/bessa.length,
+            maxBessa = bessa.sort((a,b) => {return a-b})[bessa.length-1],
+            bessaDiff = (maxBessa - averageBessa) / 25;
+        
+        percentage.up = parseInt(50 + ((lastBessa - averageBessa) / bessaDiff), 10);
+        percentage.down = (100 - percentage.up);
     }
 
     return checkPercentage(percentage);
@@ -141,26 +147,81 @@ const powerAnalysis = (candles) =>
 
 const hoursAnalysis = (candles) =>
 {
-    let closeHour = new Date(candles.pop().time).getHours(),
-        highest = 0, lowest = 0, candlesSum = 0, candlesAmount = 0;
+    candles.splice(-1,1);
+    
+    let closeHour = new Date(candles[candles.length-1].time).getHours(),
+        movementsUp = 0, movementsAmount = 0,
+        percentage = { up: 0, down: 0 };
     
     candles.forEach((item, index) => {
         let candleHour = new Date(item.time).getHours();
-        if(candleHour === closeHour + 1)
+        if(candleHour === closeHour && candles[index+1])
         {
             let afterHourMovement = candles[index+2].mid.c - item.mid.o;
-            highest = (highest < afterHourMovement) ? afterHourMovement : highest;
-            lowest = (lowest > afterHourMovement) ? afterHourMovement : lowest;
-            candlesSum += afterHourMovement;
-            candlesAmount++;
+            (afterHourMovement > 0) ? movementsUp++ : null;
+            movementsAmount++;
         }
     });
     
-    let average = candlesSum/candlesAmount,
-        diff = (average > 0) ? highest / 50 : lowest / 50,
-        percentage = { up: 0, down: 0 };
+    percentage.up = parseInt((movementsUp / movementsAmount)*100, 10);
+    percentage.down = 100 - percentage.up;
     
-    percentage.up = parseInt(50 + (average * (-1))/diff);
+    return checkPercentage(percentage);
+}
+
+const formationAnalysis = (candles) =>
+{
+    candles.splice(-1, 1);
+    let lastCandles = [candles[candles.length - 3], candles[candles.length - 2], candles[candles.length - 1]],
+        lastFormationDirections = [
+            checkDirection(lastCandles[0].mid.o,lastCandles[0].mid.c),
+            checkDirection(lastCandles[1].mid.o,lastCandles[1].mid.c),
+            checkDirection(lastCandles[2].mid.o,lastCandles[2].mid.c)
+        ],
+        closest = [],
+        lowestNumber = candles[0].mid.h.split('.')[1].length;
+    
+    const countDifference = (x,y) => {
+        let result = Math.abs(x-y) === 0 ? 1/(Math.pow(10, lowestNumber)) : Math.abs(x-y);
+        return result;
+    }
+    
+    const calculateSimilarity = (candle, lastCandle) => {
+        let { o, h, l, c } = candle.mid,
+            { o: lo, h: lh, l: ll, c: lc } = lastCandle.mid,
+            body = countDifference(o,c), high = countDifference(h,o), low = countDifference(c,l),
+            lastBody = countDifference(lo,lc), lastHigh = countDifference(lh,lo), lastLow = countDifference(lc,ll),
+            highBody = Math.abs((high/body) - (lastHigh/lastBody)),
+            highLow = Math.abs((high/low) - (lastHigh/lastLow)),
+            bodyLow = Math.abs((body/low) - (lastBody/lastLow));
+        
+        return highBody + highLow + bodyLow;
+    };
+    
+    candles.forEach((item, index) => {
+        if(candles[index+5] && index < candles.length - 3)
+        {
+            if(checkDirection(item.mid.o,item.mid.c) === lastFormationDirections[0] && 
+               checkDirection(candles[index+1].mid.o, candles[index+1].mid.c) === lastFormationDirections[1] &&
+               checkDirection(candles[index+2].mid.o, candles[index+2].mid.c) === lastFormationDirections[2] 
+              )
+            {
+                closest.push([calculateSimilarity(item,lastCandles[0]) + 
+                             calculateSimilarity(candles[index+1], lastCandles[1]) + 
+                             calculateSimilarity(candles[index+2], lastCandles[2]),
+                             candles[index+5].mid.c - candles[index+3].mid.o]);
+            }
+        }
+    });
+    
+    let newClosest = closest.sort((a,b) => {return a[0]-b[0]}).slice(0,21),
+        movementUp = 0, percentage = { up: 0, down: 0 };
+    
+    newClosest.forEach(item => {
+        item[1] > 0 ? movementUp++ : null;
+    });
+    
+    percentage.up = parseInt((movementUp / newClosest.length)*100,10);
     percentage.down = 100 - percentage.up;
     
     return checkPercentage(percentage);
@@ -190,10 +251,10 @@ export const analysisData = [
     {
         id:2,
         name: "Siła Hossy/Bessy",
-        description: "Na podstawie świec jednogodzinnych OHLC z ostatnich 5 dni (nie licząc aktualnej), liczona jest średnia wielkość wzrostów i spadków, oraz określana szansa na dalszą kontynuacje trendu.",
+        description: "Na podstawie świec jednogodzinnych OHLC z ostatnich 10 dni (nie licząc aktualnej), liczona jest średnia wielkość wzrostów i spadków, oraz określana szansa na dalszą kontynuacje trendu.",
         candles: {
             granularity: "H1",
-            count: 121
+            count: 241
         },
         algorithm: powerAnalysis
     },
@@ -206,5 +267,15 @@ export const analysisData = [
             count: 721
         },
         algorithm: hoursAnalysis
+    },
+    {
+        id:4,
+        name: "Formacje",
+        description: "Na podstawie podobieństwa 3 ostatnich świec z innymi takimi formacjami w ostatnich 30 dniach, określane jest prawdopodobieństwo dalszego ruchu.",
+        candles: {
+            granularity: "H1",
+            count: 721
+        },
+        algorithm: formationAnalysis
     }
 ];

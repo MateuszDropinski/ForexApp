@@ -6,8 +6,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getChart } from '../actions';
 
-import styled from 'styled-components';
-
 import { analysisData } from '../data/analysis';
 
 class CurrencyPage extends Component
