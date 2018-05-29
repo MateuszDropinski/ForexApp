@@ -11,7 +11,7 @@ class MainPage extends Component
 {
     renderAnalysis(analysis)
     {
-        return <Analysis id={analysis.id} key={analysis.id} />;
+        return <Analysis id={analysis.id} key={analysis.id} description={true} />;
     }
     
     shouldComponentUpdate()
@@ -43,7 +43,7 @@ class MainPage extends Component
                     <TextBlock>Jest to aplikacja stworzona przez: <a href="https://github.com/MateuszDropinski">https://github.com/MateuszDropinski</a> w celu połączenia dwóch hobby jakimi są: forex i programowanie. Została ona stworzona głównie w celach edukacyjnych.</TextBlock>
                     <TextBlock>Co znajduje się na stronie:</TextBlock>
                     <TextBlock><strong>- pary walutowe - </strong>na dole strony znajduje się wysuwana sekcja z wybranymi przeze mnie sześcioma parami walutowymi, które są aktualizowane w rzeczywistym czasie. Po wybraniu jednej z nich można przejść do podstrony analiz danej waluty. W tym miejscu można również symulować kupno, oraz sprzedaż konkretnych par, aby zamknąć zlecenie trzeba wejść w zakładkę <Link to='/orders'>"Historia zleceń"</Link>. Znajdują się tam aktualnie otwarte zlecenia i te już zamkniętę, pokazane jest jedynie na pipsach czy zlecenie dałoby zysk czy nie,</TextBlock>
-                    <TextBlock><strong>- <Link to="/panel">panel analiz</Link> - </strong>w panelu analiz znajdują się wybrane przez Ciebie analizy, które znajdziesz po kliknięciu w wybraną przez Ciebie parę walutową w panelu par walutowych na dole. Panel analiz zapisuje się dla każdego urządzenia,</TextBlock>
+                    <TextBlock><strong>- <Link to="/panel">panel analiz</Link> - </strong>w panelu analiz znajdują się wybrane przez Ciebie analizy, które znajdziesz po kliknięciu w wybraną przez Ciebie parę walutową w panelu par walutowych na dole. Panel analiz zapisuje się dla każdej przeglądarki,</TextBlock>
                     <TextBlock><strong>- <Link to="/orders">historia zleceń</Link> - </strong>w historii zleceń znajdują się zamknięte zlecenia i otwarte, które można tam zamknąć.</TextBlock>
                 </PageSection>
                 <PageSection horizontal="left">

@@ -43,7 +43,7 @@ class CurrencyPage extends Component
     
     renderAnalysis(analysis)
     {
-        return <Analysis id={analysis.id} key={analysis.id} currency={this.props.id}/>
+        return <Analysis id={analysis.id} key={analysis.id} currency={this.props.id} description={true}/>
     }
     
     render()
@@ -67,7 +67,7 @@ class CurrencyPage extends Component
 
 function mapDispatchToProps(dispatch)
 {
-    return bindActionCreators({getChart}, dispatch);
+    return bindActionCreators({ getChart }, dispatch);
 }
 
 function mapStateToProps({ charts })

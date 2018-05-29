@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-import { Percentages, Bar, AnalysisContainer, Title, Correctness, Description } from './styles/analysis';
+import { Percentages, Bar, AnalysisContainer, Title, Description, ToggleButton } from './styles/analysis';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getAnalysis } from '../actions';
+import { getAnalysis, togglePanel } from '../actions';
 
 import { analysisData } from '../data/analysis';
 
@@ -12,7 +12,7 @@ class Analysis extends Component
 {   
     componentWillReceiveProps(newProps)
     {
-        if(newProps[newProps.currency] && !newProps[newProps.currency][newProps.id])
+        if(newProps.analysis[newProps.currency] && !newProps.analysis[newProps.currency][newProps.id])
         {
             const { candles, algorithm } = analysisData[newProps.id];
             this.props.getAnalysis(candles, newProps.currency, algorithm, newProps.id);
@@ -21,7 +21,9 @@ class Analysis extends Component
     
     componentDidMount()
     {
-        if(this.props.currency)
+        let { currency, id } = this.props
+        
+        if(currency && !this.props.analysis[currency][id])
         {
             const { candles, algorithm } = analysisData[this.props.id];
             
@@ -35,9 +37,9 @@ class Analysis extends Component
         
         if(currency)
         {
-            if(this.props[currency][id] && this.props[currency][id] !== "Loading")
+            if(this.props.analysis[currency][id] && this.props.analysis[currency][id] !== "Loading")
             {
-                let { up, down } = this.props[currency][id];
+                let { up, down } = this.props.analysis[currency][id];
                 return (
                     <Percentages>
                         <Bar percentage={up} />
@@ -53,12 +55,21 @@ class Analysis extends Component
     render()
     {
         const { name, description } = analysisData[this.props.id];
-        const currency = this.props.currency ? this.props.currency : "all";
+        const { panel, id } = this.props;
         return(
             <AnalysisContainer>
                 <Title>"{name}"</Title>
-                <Description show={ description ? "block" : "none" }>Opis: {description}</Description>
+                <Description show={ this.props.description ? "block" : "none" }>
+                    Opis: {description}
+                </Description>
                 {this.renderPercentages()}
+                <ToggleButton 
+                    toggle={(this.props.currency && panel[this.props.currency][id]) ? true : false} 
+                    show={this.props.currency ? "block" : "none"}
+                    onClick = {() => this.props.togglePanel(this.props.currency, id)}
+                >
+                    {this.props.currency && panel[this.props.currency][id] ? "Usuń" : "Dodaj"}
+                </ToggleButton>
             </AnalysisContainer>
         )
     }
@@ -66,12 +77,12 @@ class Analysis extends Component
 
 function mapDispatchToProps(dispatch)
 {
-    return bindActionCreators({ getAnalysis }, dispatch);
+    return bindActionCreators({ getAnalysis, togglePanel }, dispatch);
 }
 
-function mapStateToProps({ analysis })
+function mapStateToProps({ analysis, panel })
 {
-    return analysis;
+    return { analysis, panel };
 }
 
 const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(Analysis);

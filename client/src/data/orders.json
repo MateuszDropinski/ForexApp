@@ -1,0 +1,6 @@
+ { "EUR_USD": [ false, false, false, false, false ],
+"EUR_JPY": [ true, false, false, false, false ],
+   "GBP_JPY": [ false, false, false, false, false ],
+   "GBP_USD": [ false, true, true, true, true ],
+   "USD_JPY": [ false, true, true, true, true ],
+   "EUR_GBP": [ true, true, true, true, true ] }

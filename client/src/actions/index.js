@@ -1,21 +1,12 @@
-/*
+import { defaultPanel } from '../data/panel';
 
-        
-        fetch("/api/getcandles", {
-            method: "post",
-            body: JSON.stringify({
-                instrument: "EUR_USD"
-            }),
-            headers: {"Content-Type": "application/json"}
-        })
-        .then(res => res.json())
-        .then(data => console.log(data));
-*/
 export const PRICE = "PRICE";
 export const CHART = "CHART";
 export const ERROR = "ERROR";
 export const ANALYSIS = "ANALYSIS";
 export const LOADING = "LOADING";
+export const PANEL = "PANEL";
+export const PANELINIT = "PANELINIT"
 
 export function sendData({ type, data })
 {   
@@ -84,7 +75,7 @@ export function getAnalysis(candles, currency, algorithm, id)
     
     return dispatch =>
     {
-        dispatch(sendingRequest({currency, id}));
+        dispatch(sendingRequest({ currency, id }));
         
         fetch("/api/getcandles", {
             method: "post",
@@ -92,6 +83,34 @@ export function getAnalysis(candles, currency, algorithm, id)
             headers: {"Content-Type": "application/json"}
         })
         .then(res => res.json())
-        .then(data =>  dispatch(sendData({type: ANALYSIS, data: { result: algorithm(data.candles), id, currency}})));
+        .then(data =>  dispatch(sendData({type: ANALYSIS, data: { result: algorithm(data.candles), id, currency }})));
     }
+}
+
+export function togglePanel(currency, id)
+{
+    return dispatch =>
+    {
+        let panel = JSON.parse(window.localStorage.getItem("myForexPanel"));
+        panel[currency][id] = !panel[currency][id];
+        window.localStorage.setItem("myForexPanel", JSON.stringify(panel));
+        
+        dispatch(sendData({type: PANEL, data: { currency, id }}));
+    }
+}
+
+export function panelInitiation()
+{
+    return dispatch =>
+    {
+        let panel;
+        if(!window.localStorage.getItem("myForexPanel"))
+        {
+            window.localStorage.setItem("myForexPanel", JSON.stringify(defaultPanel));
+            panel = defaultPanel;
+        }
+        else panel = window.localStorage.getItem("myForexPanel");
+        
+        dispatch(sendData({type: PANELINIT, data: JSON.parse(panel)}));
+    }    
 }

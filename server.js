@@ -5,6 +5,7 @@ const express = require("express"),
       WebSocket = require("faye-websocket"),
       request = require("request"),
       path = require("path"),
+      fs = require("fs"),
       app = express(),
       port = 5000,
       staticFiles = express.static,
@@ -21,7 +22,8 @@ const express = require("express"),
         "EUR_GBP",
         "EUR_JPY"
       ],
-      url = 'https://api-fxpractice.oanda.com/v3/instruments';
+      url = 'https://api-fxpractice.oanda.com/v3/instruments',
+      localUrl = './client/src';
 
 let pricesStreaming, ws;
 

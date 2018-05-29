@@ -1,7 +1,6 @@
 import React from 'react';
-import { Sparklines, SparklinesLine, SparklinesReferenceLine} from 'react-sparklines';
+import { Sparklines, SparklinesLine } from 'react-sparklines';
 
-import styled from 'styled-components';
 import { leadingColor } from '../data/style';
 
 const Chart = ({ data }) =>

@@ -11,7 +11,27 @@ export const AnalysisContainer = styled.article`
     border:1px solid ${leadingColor};
     border-radius:2px;
     background-color:#ffffff;
+    position:relative;
 `;
+
+export const ToggleButton = styled.button`
+    display:${props => props.show};
+    position:absolute;
+    top:5px;
+    right:5px;
+    cursor:pointer;
+    padding:5px 10px;
+    background-color: ${props => props.toggle ? "#eb4242" : "#2bd32b"};
+    color:#ffffff;
+    border: none;
+    border-radius:2px;
+    transition:.25s;
+
+    &:hover
+    {
+        background-color: ${props => props.toggle ? "#910808" : "#077b07"};
+    }
+`
 
 export const Title = styled.h3`
     margin:10px 0px;
