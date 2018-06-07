@@ -157,7 +157,7 @@ const hoursAnalysis = (candles) =>
         let candleHour = new Date(item.time).getHours();
         if(candleHour === closeHour && candles[index+1])
         {
-            let afterHourMovement = candles[index+2].mid.c - item.mid.o;
+            let afterHourMovement = candles[index+1].mid.c - item.mid.o;
             (afterHourMovement > 0) ? movementsUp++ : null;
             movementsAmount++;
         }
@@ -199,7 +199,7 @@ const formationAnalysis = (candles) =>
     };
     
     candles.forEach((item, index) => {
-        if(candles[index+5] && index < candles.length - 3)
+        if(candles[index+4] && index < candles.length - 3)
         {
             if(checkDirection(item.mid.o,item.mid.c) === lastFormationDirections[0] && 
                checkDirection(candles[index+1].mid.o, candles[index+1].mid.c) === lastFormationDirections[1] &&
@@ -209,7 +209,7 @@ const formationAnalysis = (candles) =>
                 closest.push([calculateSimilarity(item,lastCandles[0]) + 
                              calculateSimilarity(candles[index+1], lastCandles[1]) + 
                              calculateSimilarity(candles[index+2], lastCandles[2]),
-                             candles[index+5].mid.c - candles[index+3].mid.o]);
+                             candles[index+4].mid.c - candles[index+3].mid.o]);
             }
         }
     });

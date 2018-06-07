@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { media } from '../data/style';
 
 const PageSection = ({ children, vertical, horizontal }) =>
 {
@@ -19,4 +20,8 @@ const Section = styled.article`
     justify-content:${props => props.horizontal};
     align-items:${props => props.vertical};
     flex-wrap:wrap;
+
+    ${media.md`padding-top:30px;width:80%;margin:0 auto;`}
+    ${media.lg`width:60%;`}
+    ${media.hd`width:50%;`}
 `;

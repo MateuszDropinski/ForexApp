@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import bannerBackground from '../../assets/banner.jpg';
-import { leadingColor } from '../../data/style';
+import { leadingColor, media } from '../../data/style';
 
 export const Banner = styled.div`
     width:100%;
@@ -9,6 +9,10 @@ export const Banner = styled.div`
     background-size:cover;
     background-position:center center;
     position:relative;
+
+    ${media.md`height:130px;`}
+    ${media.md`height:180px;`}
+    ${media.md`height:230px;`}
 `;
 
 export const Header = styled.h1`
@@ -21,7 +25,6 @@ export const Header = styled.h1`
     width:10px;
     line-height:2.2rem;
     font-size:2rem;
-    position:relative;
 
     &:before
     {
@@ -35,4 +38,22 @@ export const Header = styled.h1`
         border-radius:2px;
         transform:translate(0,5px);
     }
+
+    ${media.md`
+        width:100%;
+        text-align:center;
+        left:0px;
+        
+        &:before{
+            left:50%;width:170px;
+            transform:translate(-50%,10px);
+    }`}
+    ${media.lg`&:before{
+            width:220px;
+    }`}
+    ${media.hd`&:before{
+            width:260px;
+            transform:translate(-50%,20px);
+            height:5px;
+    }`}
 `

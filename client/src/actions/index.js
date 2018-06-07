@@ -105,6 +105,7 @@ export function togglePanel(currency, id)
 export function panelInitiation()
 {
     let panel;
+    
     if(!window.localStorage.getItem("myForexPanel"))
     {
         window.localStorage.setItem("myForexPanel", JSON.stringify(defaultPanel));
@@ -160,6 +161,7 @@ export function removePosition(id, closeValue)
 {
     let positions = JSON.parse(window.localStorage.getItem("myForexPositions")),
     element = positions.active.splice(id,1)[0];
+    console.log(positions.active, element, id, closeValue);
     
     element.closeDate = new Date();
     element.closeValue = closeValue;

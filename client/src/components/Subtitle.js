@@ -1,7 +1,7 @@
 import React from 'react';
 
 import styled from 'styled-components';
-import { leadingColor } from '../data/style';
+import { leadingColor, media } from '../data/style';
 
 const Subtitle = ({ children }) =>
 {
@@ -16,7 +16,7 @@ export { Subtitle };
 
 const Header = styled.h2`
     margin:15px 0px;
-    font-size:1.1rem;
+    font-size:1.2rem;
     position:relative;
     
     &:before
@@ -31,4 +31,6 @@ const Header = styled.h2`
         background-color:${leadingColor};
         border-radius:2px;
     }
+
+    ${media.hd`margin:20px 0px;&:beofore{height:4px;}`}
 `;

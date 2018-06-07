@@ -8,6 +8,7 @@ import thunk from 'redux-thunk';
 import reducers from './reducers';
 
 import { injectGlobal } from 'styled-components';
+import { media } from './data/style';
 import background from './assets/background.png';
 
 const store = createStore(
@@ -23,6 +24,9 @@ injectGlobal`
     html
     {
         font-size:100%;
+        ${media.md`font-size:110%;`}
+        ${media.lg`font-size:135%;`}
+        ${media.hd`font-size:160%;`}
     }
     body
     {

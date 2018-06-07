@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { leadingColor, media } from '../../data/style';
 
 export const CurrenciesContainer = styled.article`
     width:100%;
@@ -8,6 +9,10 @@ export const CurrenciesContainer = styled.article`
     top:100%;
     transition:.25s;    
     transform:${props => props.show ? "translate(0,-100%)" : "translate(0,0)" };
+
+    ${media.md`grid-template:130px 130px / 1fr 1fr 1fr;`}
+    ${media.lg`grid-template:180px / 1fr 1fr 1fr 1fr 1fr 1fr;`}
+    ${media.hd`grid-template:230px / 1fr 1fr 1fr 1fr 1fr 1fr;`}
 `
 
 export const ExpandBar = styled.div`
@@ -24,7 +29,7 @@ export const ExpandBar = styled.div`
     align-items:center;
     cursor:pointer;
     transition:.25s;
-    border:1px solid black;
+    border-top:3px solid ${leadingColor};
     font-size:1rem;
 
     &:hover
@@ -32,4 +37,8 @@ export const ExpandBar = styled.div`
         background-color:white;
         color:black;
     }
+
+    ${media.md`height:60px;`}
+    ${media.lg`height:70px;`}
+    ${media.hd`height:80px;`}
 `

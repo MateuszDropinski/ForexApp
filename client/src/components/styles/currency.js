@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { leadingColor } from '../../data/style';
+import { leadingColor, media } from '../../data/style';
 import { NavLink } from 'react-router-dom';
 
 export const CurrencyContainer = styled(NavLink)`
@@ -15,6 +15,10 @@ export const CurrencyContainer = styled(NavLink)`
     {
         background-color:${leadingColor};
     }
+
+    ${media.md`padding:10px;`}
+    ${media.lg`padding:15px;`}
+    ${media.hd`padding:25px;`}
 `
 
 export const Instrument = styled.h3`
@@ -28,6 +32,10 @@ export const Paragraph = styled.p`
     {
         color: ${props => props.color};
     }
+
+    ${media.md`margin:4px 0px;`}
+    ${media.lg`margin:6px 0px;`}
+    ${media.hd`margin:10px 0px;`}
 `
 
 export const PositionButton = styled.button`
@@ -47,6 +55,10 @@ export const PositionButton = styled.button`
         background-color:${props => props.position === "buy" ? "#16a521" : "#d41414"};
         color:white;
     }
+
+    ${media.md`padding:5px 10px; width:50px;`}
+    ${media.lg`padding:7px 10px; width:60px;`}
+    ${media.hd`padding:10px 15px; width:80px;margin:2px 10px 2px 0px;`}
 `
 
 export const InfoBox = styled.div`

@@ -42,8 +42,8 @@ class Analysis extends Component
                 let { up, down } = this.props.analysis[currency][id];
                 return (
                     <Percentages>
-                        <Bar percentage={up} />
-                        <Bar percentage={down} />
+                        <Bar percentage={up} side="left"/>
+                        <Bar percentage={down} side="right"/>
                     </Percentages>
                 );
             }                  
