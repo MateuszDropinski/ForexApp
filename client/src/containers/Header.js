@@ -11,7 +11,7 @@ class Header extends Component
                 <Menu>
                     <StyledLink activeClassName="active-link" exact to="/">Strona główna</StyledLink>
                     <StyledLink activeClassName="active-link" to="/panel">Panel analiz</StyledLink>
-                    <StyledLink activeClassName="active-link" to="/orders">Historia zleceń</StyledLink>
+                    <StyledLink activeClassName="active-link" to="/positions">Historia zleceń</StyledLink>
                 </Menu>
             </MainHeader>
         )

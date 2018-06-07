@@ -5,3 +5,4 @@ export * from './Subtitle';
 export * from './Text_block';
 export * from './Chart';
 export * from './Page_container';
+export * from './Positions_table';

@@ -23,8 +23,8 @@ class Currencies extends Component
     
     renderCurrencies()
     {
-        return Object.keys(this.props.streamData).map((instrument,index) => {
-            let { bid, ask } = this.props.streamData[instrument];
+        return Object.keys(this.props.stream).map((instrument,index) => {
+            let { bid, ask } = this.props.stream[instrument];
             return <Currency key={index} bid={bid} ask={ask} instrument={instrument}/>
         });
     }
@@ -44,12 +44,12 @@ class Currencies extends Component
 
 function mapDispatchToProps(dispatch)
 {
-    return bindActionCreators({startStream}, dispatch);
+    return bindActionCreators({ startStream }, dispatch);
 }
 
-function mapStateToProps(state)
+function mapStateToProps({ stream })
 {
-    return state;
+    return { stream };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Currencies);

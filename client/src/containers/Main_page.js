@@ -35,7 +35,7 @@ class MainPage extends Component
                     <TextBlock><strong>- Ask - </strong>jest to cena po której otwierane są transakcje kupna i zamykane transakcje sprzedaży,</TextBlock>
                     <TextBlock><strong>- Spread - </strong>różnica między ceną Ask, a Bid. Otwierając pozycję kupna, otwiera się ją po cenie Ask, a zamyka po Bid, w przypadku sprzedaży jest na odwrót,</TextBlock>
                     <TextBlock><strong>- Lot - </strong>w przypadku par walutowych 1 lot odpowiada 100000 jednostek waluty bazowej,</TextBlock>
-                    <TextBlock><strong>- Pips - </strong>czwarta cyfra po przecinku, w przypadku par z jenem trzecia. Pips cząstkowy to piąta cyfra po przecinku w przypadku par walutowych, oprócz jena,</TextBlock>
+                    <TextBlock><strong>- Pips - </strong>czwarta cyfra po przecinku, w przypadku par z jenem druga. Pips cząstkowy to piąta cyfra po przecinku w przypadku par walutowych, oprócz jena,</TextBlock>
                     <TextBlock><strong>- dźwignia finansowa - </strong>umożliwia kupowanie dużej ilości waluty mając mniej pieniędzy, co zwiększa ryzyko dużych strat i szanse dużych zysków.</TextBlock>
                 </PageSection>
                 <PageSection horizontal="left">

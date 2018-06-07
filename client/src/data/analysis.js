@@ -221,7 +221,9 @@ const formationAnalysis = (candles) =>
         item[1] > 0 ? movementUp++ : null;
     });
     
-    percentage.up = parseInt((movementUp / newClosest.length)*100,10);
+    if(!newClosest.length)percentage.up = 50;
+    else percentage.up = parseInt((movementUp / newClosest.length)*100,10);
+    
     percentage.down = 100 - percentage.up;
     
     return checkPercentage(percentage);

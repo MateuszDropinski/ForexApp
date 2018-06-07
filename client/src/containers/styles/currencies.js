@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const CurrenciesContainer = styled.article`
     width:100%;
     display:grid;
-    grid-template: 80px 80px / 1fr 1fr 1fr;
+    grid-template: 110px 110px / 1fr 1fr 1fr;
     position:fixed;
     top:100%;
     transition:.25s;    
