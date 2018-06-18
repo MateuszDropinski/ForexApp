@@ -8,11 +8,13 @@ import PositionsPage from './containers/Positions_page';
 
 import styled from 'styled-components';
 
+import { analysisData } from './data/analysis';
+
 import { BrowserRouter, Route } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { panelInitiation, positionsInitiation } from './actions';
+import { panelInitiation, positionsInitiation, getAnalysis } from './actions';
 
 const PageContainer = styled.article`
     width:100%;
@@ -21,10 +23,37 @@ const PageContainer = styled.article`
 
 class App extends Component 
 {
+    constructor()
+    {
+        super()
+        
+        this.state = { hour: 0 };
+    }
+    
+    shouldComponentUpdate()
+    {
+        return false;
+    }
+    
     componentDidMount()
     {
         this.props.panelInitiation();
         this.props.positionsInitiation();
+        this.setState({ hour: new Date().getHours() });
+        
+        setInterval(() => {
+            if(new Date().getHours() !== this.state.hour && new Date().getMinutes() > 0)
+            {
+                this.setState({ hour: new Date().getHours() })  
+                for(let instrument in this.props.analysis)
+                {
+                    for(let analysis in this.props.analysis[instrument])
+                    {
+                        this.props.getAnalysis(analysisData[analysis].candles, instrument, analysisData[analysis].algorithm, analysis);
+                    }
+                }
+            }                
+        }, 60000);
     }
     
     render() {
@@ -36,17 +65,21 @@ class App extends Component
                     <Route exact path="/panel" render={() => (<PanelPage />)}/>
                     <Route exact path="/positions" render={() => (<PositionsPage />)}/>
                     <Route path="/currency/:id" render={props => <CurrencyPage id={props.match.params.id} />}/>
-                    <Route path="/" render={() => (<Currencies />)}/>
-                    
+                    <Route path="/" render={() => (<Currencies />)}/>                    
                 </PageContainer>                
             </BrowserRouter>
         );
     }
 }
 
-function mapDispatchToProps(dispatch)
+function mapStateToProps({ analysis })
 {
-    return bindActionCreators({ panelInitiation, positionsInitiation }, dispatch);
+    return { analysis };
 }
 
-export default connect(null, mapDispatchToProps)(App);
+function mapDispatchToProps(dispatch)
+{
+    return bindActionCreators({ panelInitiation, positionsInitiation, getAnalysis }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

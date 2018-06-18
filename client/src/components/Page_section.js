@@ -21,7 +21,7 @@ const Section = styled.article`
     align-items:${props => props.vertical};
     flex-wrap:wrap;
 
-    ${media.md`padding-top:30px;width:80%;margin:0 auto;`}
+    ${media.md`width:80%;margin:0 auto;`}
     ${media.lg`width:60%;`}
-    ${media.hd`width:50%;`}
+    ${media.hd`width:50%; padding:25px 25px 0px 25px;`}
 `;

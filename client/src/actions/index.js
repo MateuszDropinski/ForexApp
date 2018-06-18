@@ -45,6 +45,7 @@ export function startStream()
                 }
                 catch(e) 
                 {
+                    console.log(e);
                     // Catching errors
                 }
             };            
@@ -161,11 +162,11 @@ export function removePosition(id, closeValue)
 {
     let positions = JSON.parse(window.localStorage.getItem("myForexPositions")),
     element = positions.active.splice(id,1)[0];
-    console.log(positions.active, element, id, closeValue);
     
     element.closeDate = new Date();
     element.closeValue = closeValue;
     positions.history.unshift(element);
+    if(positions.history.length > 30)positions.history.pop();
     window.localStorage.setItem("myForexPositions", JSON.stringify(positions));
     
     return {

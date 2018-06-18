@@ -39,8 +39,7 @@ class Currency extends Component
         e.stopPropagation();
         this.props.setPosition(this.props.instrument, position, value);
         this.setState({ show:true, opacity:1, position, information:`${position === "buy" ? "Kupno" : "Sprzedaż"} ${this.props.instrument} po cenie: ${value}`})
-        setTimeout(() => this.setState({ opacity: 0 }), 2000);
-        setTimeout(() => this.setState({ show: false }), 2000);
+        setTimeout(() => this.setState({ opacity: 0, show:false }), 2000);
     }
     
     render()

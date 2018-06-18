@@ -10,9 +10,9 @@ export const CurrenciesContainer = styled.article`
     transition:.25s;    
     transform:${props => props.show ? "translate(0,-100%)" : "translate(0,0)" };
 
-    ${media.md`grid-template:130px 130px / 1fr 1fr 1fr;`}
-    ${media.lg`grid-template:180px / 1fr 1fr 1fr 1fr 1fr 1fr;`}
-    ${media.hd`grid-template:230px / 1fr 1fr 1fr 1fr 1fr 1fr;`}
+    ${media.md`grid-template:120px 120px / 1fr 1fr 1fr;`}
+    ${media.lg`grid-template:140px / 1fr 1fr 1fr 1fr 1fr 1fr;`}
+    ${media.hd`grid-template:185px / 1fr 1fr 1fr 1fr 1fr 1fr;`}
 `
 
 export const ExpandBar = styled.div`
@@ -38,7 +38,7 @@ export const ExpandBar = styled.div`
         color:black;
     }
 
-    ${media.md`height:60px;`}
-    ${media.lg`height:70px;`}
-    ${media.hd`height:80px;`}
+    ${media.md`height:50px;`}
+    ${media.lg`height:60px;`}
+    ${media.hd`height:70px;`}
 `

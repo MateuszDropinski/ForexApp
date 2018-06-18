@@ -10,12 +10,13 @@ export default function(state = {
         case actions.ADDPOSITION:
             return {
                 ...state,
-                active: [action.payload, ...state.active]
+                active: [...state.active, action.payload]
             }
         case actions.DELETEPOSITION:
-            let element = state.active.splice(action.payload, 1)[0];
+            let element = state.active.splice(action.payload.id, 1)[0];
             element.closeValue = +action.payload.closeValue;
             element.closeDate = new Date();
+            if(state.history.length > 30)state.history.pop();
             
             return {
                 active: [...state.active],

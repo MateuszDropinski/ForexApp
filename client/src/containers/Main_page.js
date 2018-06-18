@@ -14,12 +14,6 @@ class MainPage extends Component
         return <Analysis id={analysis.id} key={analysis.id} description={true} />;
     }
     
-    shouldComponentUpdate()
-    {
-        console.log('ss');
-        return false;
-    }
-    
     render()
     {
         return(

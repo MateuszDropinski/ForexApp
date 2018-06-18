@@ -20,6 +20,5 @@ const Paragraph = styled.p`
     width:100%;
     text-align:${props => props.align};
 
-    ${media.md`margin: 15px 0px;`}
-    ${media.md`margin: 20px 0px;`}
+    ${media.hd`margin: 15px 0px;`}
 `;

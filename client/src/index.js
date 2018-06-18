@@ -24,9 +24,8 @@ injectGlobal`
     html
     {
         font-size:100%;
-        ${media.md`font-size:110%;`}
-        ${media.lg`font-size:135%;`}
-        ${media.hd`font-size:160%;`}
+        ${media.lg`font-size:110%;`}
+        ${media.hd`font-size:130%;`}
     }
     body
     {

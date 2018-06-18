@@ -6,12 +6,12 @@ import { leadingColor, media } from '../../data/style';
 export const MainHeader = styled.header`
     padding:15px;
     background-color:#000000;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px ${leadingColor};
     position:relative;
+    z-index:1;
     
     ${media.md`padding:20px 50px;`}
-    ${media.lg`padding:40px 50px;`}
-    ${media.hd`padding:50px;`}
+    ${media.hd`padding:25px 50px;`}
 `;
 
 export const Menu = styled.nav`
@@ -57,6 +57,5 @@ export const StyledLink = styled(NavLink)`
     }
 
     ${media.md`padding:5px;`}
-    ${media.lg`padding:10px;`}
-    ${media.hd`padding:15px;&:before{height:4px;}`}
+    ${media.hd`&:before{height:4px;}`}
 `;

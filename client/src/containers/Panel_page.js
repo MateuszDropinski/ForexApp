@@ -11,6 +11,7 @@ class PanelPage extends Component
     renderAnalysis(currency, panelData)
     {
         let empty = 0;
+        
         return <PageSection key={currency} horizontal="left">
             <Subtitle>{currency.split('_').join(' ')}</Subtitle>
             {panelData[currency].map((show, id) => {

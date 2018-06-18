@@ -70,7 +70,7 @@ class PositionsTable extends Component
             else 
                 difference = oV - this.props.stream[ins].ask;
         }
-        difference = this.props.stream[ins].bid ? Math.round((difference * multiplier) * multiplier) / multiplier : "loading";
+        difference = difference || difference === 0 ? Math.round((difference * multiplier) * multiplier) / multiplier : "loading";
         
         if(difference === "loading") return <td>Ładowanie...</td>
         else if(difference > 0) return <td style={{color: '#4ac14a', fontSize: '.8rem'}}>+ {difference}</td>

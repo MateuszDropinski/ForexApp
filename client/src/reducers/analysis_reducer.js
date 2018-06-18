@@ -2,9 +2,9 @@ import * as actions from '../actions';
 
 export default function(state = {
     EUR_USD: {},
-    EUR_JPY: {},
+    USD_CAD: {},
     GBP_JPY: {},
-    GBP_USD: {},
+    NZD_USD: {},
     USD_JPY: {},
     EUR_GBP: {}
 }, action)

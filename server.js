@@ -16,11 +16,11 @@ const express = require("express"),
       initialSnapshots = [],
       instruments = [
         "EUR_USD",
+        "USD_CAD",
         "GBP_JPY",
-        "GBP_USD",
+        "NZD_USD",
         "USD_JPY",
-        "EUR_GBP",
-        "EUR_JPY"
+        "EUR_GBP"
       ],
       url = 'https://api-fxpractice.oanda.com/v3/instruments',
       localUrl = './client/src';

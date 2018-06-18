@@ -16,9 +16,8 @@ export const CurrencyContainer = styled(NavLink)`
         background-color:${leadingColor};
     }
 
-    ${media.md`padding:10px;`}
-    ${media.lg`padding:15px;`}
-    ${media.hd`padding:25px;`}
+    ${media.lg`padding:10px;`}
+    ${media.hd`padding:20px;`}
 `
 
 export const Instrument = styled.h3`
@@ -72,8 +71,11 @@ export const InfoBox = styled.div`
     bottom:0px;
     visibility:${props => props.show ? "visible" : "hidden"};
     right:0px;
-    transition: visibility 0s, opacity 0.25s linear;
+    transition: visibility 0.25s, opacity 0.25s linear;
     opacity:${props => props.opacity};
+    display:flex;
+    align-items:center;
+    justify-content:center;
     
     p
     {   
@@ -81,4 +83,6 @@ export const InfoBox = styled.div`
         font-size:.6rem;
         margin:0px;
     }
+
+    ${media.hd`min-height:70px;`}
 `

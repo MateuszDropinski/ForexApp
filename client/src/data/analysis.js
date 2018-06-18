@@ -233,10 +233,10 @@ export const analysisData = [
     {
         id: 0,
         name: "Cena",
-        description: "Na podstawie świec czterogodzinnych OHLC z ostatnich 30 dni (nie licząc aktualnej), określane jest czy aktualna cena jest niska czy wysoka.",
+        description: "Na podstawie świec czterogodzinnych OHLC z ostatnich 9 dni (nie licząc aktualnej), określane jest czy aktualna cena jest niska czy wysoka.",
         candles: {
             granularity: "H4",
-            count: 181
+            count: 54
         },
         algorithm: priceAnalysis
     },

@@ -15,8 +15,8 @@ const Subtitle = ({ children }) =>
 export { Subtitle };
 
 const Header = styled.h2`
-    margin:15px 0px;
-    font-size:1.2rem;
+    margin:10px 0px;
+    font-size:1.3rem;
     position:relative;
     
     &:before
@@ -32,5 +32,5 @@ const Header = styled.h2`
         border-radius:2px;
     }
 
-    ${media.hd`margin:20px 0px;&:beofore{height:4px;}`}
+    ${media.lg`margin:15px 0px;&:before{height:4px;}`}
 `;

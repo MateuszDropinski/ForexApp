@@ -11,8 +11,8 @@ export const Banner = styled.div`
     position:relative;
 
     ${media.md`height:130px;`}
-    ${media.md`height:180px;`}
-    ${media.md`height:230px;`}
+    ${media.lg`height:150px;`}
+    ${media.hd`height:210px;`}
 `;
 
 export const Header = styled.h1`
@@ -45,15 +45,15 @@ export const Header = styled.h1`
         left:0px;
         
         &:before{
-            left:50%;width:170px;
+            left:50%;width:150px;
             transform:translate(-50%,10px);
     }`}
     ${media.lg`&:before{
-            width:220px;
+            width:180px;
     }`}
     ${media.hd`&:before{
-            width:260px;
-            transform:translate(-50%,20px);
-            height:5px;
+            width:200px;
+            transform:translate(-50%,15px);
+            height:4px;
     }`}
 `

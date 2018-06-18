@@ -13,16 +13,16 @@ export const AnalysisContainer = styled.article`
     background-color:#ffffff;
     position:relative;  
 
-    ${media.md`margin:20px 0px; padding:25px 30px;`}
-    ${media.lg`margin:30px 0px; padding:40px;`}
-    ${media.hd`margin:40px 0px; padding:50px;`}
+    ${media.md`margin:15px 0px 10px 0px; padding:20px 25px;`}
+    ${media.lg`margin:15px 5% 10px 5%; padding:30px; width:90%;`}
+    ${media.hd`margin:20px 5% 15px 5%; padding:35px;`}
 `;
 
 export const ToggleButton = styled.button`
     display:${props => props.show};
     position:absolute;
-    top:5px;
-    right:5px;
+    top:15px;
+    right:20px;
     cursor:pointer;
     padding:5px 10px;
     background-color: ${props => props.toggle ? "#eb4242" : "#2bd32b"};
@@ -37,14 +37,16 @@ export const ToggleButton = styled.button`
         background-color: ${props => props.toggle ? "#910808" : "#077b07"};
     }
 
-    ${media.md`top:10px; right:10px; padding:10px 15px;`}
-    ${media.lg`top:20px; right:20px; padding:15px 25px;`}
-    ${media.hd`top:30px; right:30px; padding:20px 30px;`}
+    ${media.md`top:20px; right:25px; padding:10px 15px;`}
+    ${media.lg`top:30px; right:30px; padding:10px 20px;`}
+    ${media.hd`top:40px; right:40px; padding:15px 25px;`}
 `
 
 export const Title = styled.h3`
-    margin:10px 0px;
+    margin:5px 0px;
     font-size:1rem;
+
+    ${media.hd`margin:10px 0px;`}
 `;
 
 export const Description = styled.p`
@@ -52,19 +54,18 @@ export const Description = styled.p`
     font-size:.75rem;
     display:${props => props.show};
 
-    ${media.lg`margin: 20px 0px;`}
-    ${media.hd`margin: 30px 0px;`}
+    ${media.hd`margin: 15px 0px;`}
 `;
 
 export const Percentages = styled.article`
     width:100%;
-    margin:10px 0px 40px 0px;
+    margin:5px 0px 35px 0px;
     position:relative;
     background-color: #4ac14a;
     
-    ${media.md`margin:10px 0px 50px 0px;`}
-    ${media.lg`margin:20px 0px 60px 0px;`}
-    ${media.hd`margin:30px 0px 70px 0px;`}
+    ${media.md`margin:10px 0px 40px 0px;`}
+    ${media.lg`margin:15px 0px 45px 0px;`}
+    ${media.hd`margin:20px 0px 50px 0px;`}
 `;
 
 export const Bar = styled.div`
@@ -82,7 +83,7 @@ export const Bar = styled.div`
     {
         content:"${props => props.percentage}%";
         width:50px;
-        height:30px;
+        height:25px;
         padding-left:10px;
         display:flex;
         align-items:center;
@@ -105,7 +106,7 @@ export const Bar = styled.div`
         }
     }
 
-    ${media.md`&:before{height:35px;}`}
-    ${media.lg`&:before{height:45px;}`}
-    ${media.hd`&:before{height:60px;}`}
+    ${media.md`&:before{height:30px;}`}
+    ${media.lg`&:before{height:35px;}`}
+    ${media.hd`&:before{height:40px;}`}
 `;
