@@ -18,7 +18,6 @@ export default function(state = {
                 ...state,
                 [action.payload.currency]: newArray
             }
-            break;
         case actions.PANELINIT:
             return action.payload;
         default:

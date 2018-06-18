@@ -55,7 +55,7 @@ class CurrencyPage extends Component
                 </PageSection>                   
                 <PageSection>
                    {this.renderChart()} 
-                    <TextBlock align="center" size=".6rem">Wykres ceny {this.props.id.split('_').join(' ')} z ostatnich 30 dni.</TextBlock>  
+                    <TextBlock align="center" size=".6rem">Wykres ceny {this.props.id.split('_').join(' ')} z ostatnich 52 dni.</TextBlock>  
                 </PageSection>    
                 <PageSection>
                     {analysisData.map(analysis => this.renderAnalysis(analysis))}

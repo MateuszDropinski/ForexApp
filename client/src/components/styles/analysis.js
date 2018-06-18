@@ -87,6 +87,7 @@ export const Bar = styled.div`
         padding-left:10px;
         display:flex;
         align-items:center;
+        z-index:2;
     }
     
     &:after

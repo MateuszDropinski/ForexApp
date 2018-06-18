@@ -40,12 +40,17 @@ export function startStream()
                 try
                 {
                     const parsedData = JSON.parse(event.data);
-                    const { closeoutBid, closeoutAsk, type, instrument } = parsedData
-                    dispatch(sendData({type, data: { closeoutBid, closeoutAsk, instrument }}));
+                    const { closeoutBid, closeoutAsk, type, instrument } = parsedData;
+                    dispatch(
+                        sendData({
+                            type, 
+                            data: { 
+                                closeoutBid, closeoutAsk, instrument 
+                            }
+                    }));
                 }
                 catch(e) 
                 {
-                    console.log(e);
                     // Catching errors
                 }
             };            
@@ -62,13 +67,21 @@ export function getChart(instrument)
             body: JSON.stringify({
                 instrument,
                 granularity: "D",
-                count: "31"
+                count: "52"
             }),
             headers: {"Content-Type": "application/json"}
         })
         .then(res => res.json())
         .then(data => {
-            data.errorMessage ? dispatch(sendData({type: ERROR, data: data})) : dispatch(sendData({type: CHART, data: {...data, instrument}}));
+            data.errorMessage ? dispatch(
+                sendData({
+                    type: ERROR, 
+                    data: data
+                })) : dispatch(
+                sendData({
+                    type: CHART, 
+                    data: {...data, instrument}}
+                        ));
         });
     }
 }
@@ -87,7 +100,11 @@ export function getAnalysis(candles, currency, algorithm, id)
             headers: {"Content-Type": "application/json"}
         })
         .then(res => res.json())
-        .then(data =>  dispatch(sendData({type: ANALYSIS, data: { result: algorithm(data.candles), id, currency }})));
+        .then(data =>  dispatch(
+            sendData({
+                type: ANALYSIS, 
+                data: { result: algorithm(data.candles), id, currency }}
+                    )));
     }
 }
 

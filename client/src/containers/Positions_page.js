@@ -3,9 +3,6 @@ import React, { Component } from 'react';
 import { PageContainer, PageSection, Subtitle, PositionsTable } from '../components';
 
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
-import styled from 'styled-components';
 
 class PositionsPage extends Component
 {    

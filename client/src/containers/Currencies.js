@@ -31,7 +31,7 @@ class Currencies extends Component
     
     render()
     {    
-        return(
+        return (
             <CurrenciesContainer show={this.state.show}>
                 <ExpandBar onClick = {() => {this.setState({ show: !this.state.show })}}>
                     <span>{this.state.show ? "Ukryj" : "Pokaż"} pary walutowe</span>

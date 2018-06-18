@@ -20,16 +20,22 @@ class Currency extends Component
         if(newProps.bid !== this.props.bid)
         {
             this.setState({ loading: true });
-            if(newProps.bid > this.props.bid)this.setState({ color: "#16a521" });
-            else if(this.props.bid > newProps.bid)this.setState({ color: "#d41414" });
-            else this.setState({ color: "#434343" });
+            
+            if(newProps.bid > this.props.bid)
+                this.setState({ color: "#16a521" });
+            else if(this.props.bid > newProps.bid)
+                this.setState({ color: "#d41414" });
+            else 
+                this.setState({ color: "#434343" });
         }        
     }
     
     shouldComponentUpdate(newProps, newState)
     {
-        if(newProps.bid !== this.props.bid || this.state.opacity !== newState.opacity)return true;
-        else return false;
+        if(newProps.bid !== this.props.bid || this.state.opacity !== newState.opacity)
+            return true;
+        else 
+            return false;
     }
     
     createPosition(e, position)
@@ -38,22 +44,29 @@ class Currency extends Component
         e.preventDefault();
         e.stopPropagation();
         this.props.setPosition(this.props.instrument, position, value);
-        this.setState({ show:true, opacity:1, position, information:`${position === "buy" ? "Kupno" : "Sprzedaż"} ${this.props.instrument} po cenie: ${value}`})
+        this.setState({ 
+            show:true, 
+            opacity:1, 
+            position, 
+            information:`${position === "buy" ? "Kupno" : "Sprzedaż"} ${this.props.instrument} po cenie: ${value}`
+        });
         setTimeout(() => this.setState({ opacity: 0, show:false }), 2000);
     }
     
     render()
     {
         let { instrument, bid, ask } = this.props;
+        let { color, opacity, show, information, loading } = this.state;
+        
         return(
             <CurrencyContainer exact to={`/currency/${instrument}`}>
                 <Instrument>{instrument.split("_").join(" ")}</Instrument>
-                <Paragraph color={this.state.color}>Bid: <span>{this.state.loading ? bid : "ładowanie..."}</span></Paragraph>
-                <Paragraph color={this.state.color}>Ask: <span>{this.state.loading ? ask : "ładowanie..."}</span></Paragraph>
+                <Paragraph color={color}>Bid: <span>{loading ? bid : "ładowanie..."}</span></Paragraph>
+                <Paragraph color={color}>Ask: <span>{loading ? ask : "ładowanie..."}</span></Paragraph>
                 <PositionButton show={bid} position="buy" onClick={e => this.createPosition(e, "buy")}>Buy</PositionButton>
                 <PositionButton show={bid} position="sell" onClick={e => this.createPosition(e, "sell")}>Sell</PositionButton>
-                <InfoBox opacity={this.state.opacity} show={this.state.show}>
-                    <p>{this.state.information}</p>
+                <InfoBox opacity={opacity} show={show}>
+                    <p>{information}</p>
                 </InfoBox>
             </CurrencyContainer>
         ) 

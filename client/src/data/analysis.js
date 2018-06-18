@@ -1,15 +1,18 @@
 const checkPercentage = (percentage) =>
 {
-    percentage = (percentage.up >= 100) ? { up: 99, down:1 } : percentage;
-    percentage = (percentage.down >= 100) ? { down: 99, up:1 } : percentage;
+    percentage = (percentage.up >= 100) ? { up: 95, down:5 } : percentage;
+    percentage = (percentage.down >= 100) ? { down: 95, up:5 } : percentage;
     
     return percentage;
 }
 
 const checkDirection = (open, close) => {
-    if(open > close) return "down";
-    else if(close > open) return "up";
-    else return "nothing";
+    if(open > close) 
+        return "down";
+    else if(close > open) 
+        return "up";
+    else 
+        return "nothing";
 }
 
 const priceAnalysis = (candles) =>
@@ -52,13 +55,20 @@ const tunnelAnalysis = (candles) =>
 {
     let highest = [candles[0].mid.h, 0],
         lowest = [candles[0].mid.l, 0],
-        startCandle, close = parseFloat(candles.pop().mid.c), startCandleIndex, highestDeflection = 0,
-        endCandle = candles[candles.length - 1], percentage = { up: 0, down: 0 };
+        startCandle, 
+        startCandleIndex, 
+        close = parseFloat(candles.pop().mid.c), 
+        highestDeflection = 0,
+        endCandle = candles[candles.length - 1], 
+        percentage = { up: 0, down: 0 };
     
     const findPoint = x =>
     {
-        let xa = startCandleIndex + 1, xb = candles.length, ya = (((startCandle.mid.h * 1) + (startCandle.mid.l * 1))) / 2,
+        let xa = startCandleIndex + 1, 
+            xb = candles.length, 
+            ya = (((startCandle.mid.h * 1) + (startCandle.mid.l * 1))) / 2,
             yb = ((endCandle.mid.h * 1) + (endCandle.mid.l * 1)) / 2;
+        
         return (((ya-yb)/(xa-xb))*x)+(ya-(((ya-yb)/(xa-xb))*xa));
     }
     
@@ -66,7 +76,7 @@ const tunnelAnalysis = (candles) =>
         if(index < 25)
         {
             let high = item.mid.h,
-            low = item.mid.l;
+                low = item.mid.l;
             
             highest = (high > highest[0]) ? [high,index] : highest;
             lowest = (low < lowest[0]) ? [low,index] : lowest;
@@ -79,17 +89,22 @@ const tunnelAnalysis = (candles) =>
     candles.forEach((item, index) => {
         if(index >= startCandleIndex)
         {
-            let deflection, high = item.mid.h * 1, low = item.mid.l * 1;
+            let deflection, 
+                high = item.mid.h * 1, 
+                low = item.mid.l * 1;
+            
             if(index < candles.length - 1 && index > startCandleIndex)
                 deflection = (high - findPoint(index) > findPoint(index) - low) ? high - findPoint(index) : findPoint(index) - low;
             else
                 deflection = high - ((high + low) / 2) > low - ((high + low) / 2) ? high - ((high + low) / 2) : ((high + low) / 2) - low;
-            highestDeflection = highestDeflection < deflection ? deflection : highestDeflection;  
+            
+            highestDeflection = (highestDeflection < deflection) ? deflection : highestDeflection;  
         }                                                                                                              
     });
     
-    let average = findPoint(candles.length + 1);   
-    let diff = highestDeflection / 10;    
+    let average = findPoint(candles.length + 1),
+        diff = highestDeflection / 10;    
+    
     percentage.up = parseInt(50 - ((close - average) / diff), 10);
     percentage.down = (100 - percentage.up);
     
@@ -116,7 +131,8 @@ const powerAnalysis = (candles) =>
             hossa.push(item.mid.c-item.mid.o);
         else if(last === "down" && direction === "down")
             bessa[bessa.length-1]+=(item.mid.o-item.mid.c);
-        if(direction !== "nothing") actual = direction;
+        if(direction !== "nothing") 
+            actual = direction;
         last = direction;
     });
     
@@ -150,15 +166,17 @@ const hoursAnalysis = (candles) =>
     candles.splice(-1,1);
     
     let closeHour = new Date(candles[candles.length-1].time).getHours(),
-        movementsUp = 0, movementsAmount = 0,
+        movementsUp = 0, 
+        movementsAmount = 0,
         percentage = { up: 0, down: 0 };
     
     candles.forEach((item, index) => {
         let candleHour = new Date(item.time).getHours();
+        
         if(candleHour === closeHour && candles[index+1])
         {
             let afterHourMovement = candles[index+1].mid.c - item.mid.o;
-            (afterHourMovement > 0) ? movementsUp++ : null;
+            movementsUp = (afterHourMovement > 0) ? movementsUp + 1 : movementsUp;
             movementsAmount++;
         }
     });
@@ -200,29 +218,26 @@ const formationAnalysis = (candles) =>
     
     candles.forEach((item, index) => {
         if(candles[index+4] && index < candles.length - 3)
-        {
             if(checkDirection(item.mid.o,item.mid.c) === lastFormationDirections[0] && 
                checkDirection(candles[index+1].mid.o, candles[index+1].mid.c) === lastFormationDirections[1] &&
-               checkDirection(candles[index+2].mid.o, candles[index+2].mid.c) === lastFormationDirections[2] 
-              )
-            {
-                closest.push([calculateSimilarity(item,lastCandles[0]) + 
+               checkDirection(candles[index+2].mid.o, candles[index+2].mid.c) === lastFormationDirections[2])
+                    closest.push([calculateSimilarity(item,lastCandles[0]) + 
                              calculateSimilarity(candles[index+1], lastCandles[1]) + 
                              calculateSimilarity(candles[index+2], lastCandles[2]),
                              candles[index+4].mid.c - candles[index+3].mid.o]);
-            }
-        }
     });
     
     let newClosest = closest.sort((a,b) => {return a[0]-b[0]}).slice(0,21),
         movementUp = 0, percentage = { up: 0, down: 0 };
     
     newClosest.forEach(item => {
-        item[1] > 0 ? movementUp++ : null;
+        movementUp = (item[1] > 0) ? movementUp+1 : movementUp;
     });
     
-    if(!newClosest.length)percentage.up = 50;
-    else percentage.up = parseInt((movementUp / newClosest.length)*100,10);
+    if(!newClosest.length)
+        percentage.up = 50;
+    else 
+        percentage.up = parseInt((movementUp / newClosest.length)*100,10);
     
     percentage.down = 100 - percentage.up;
     

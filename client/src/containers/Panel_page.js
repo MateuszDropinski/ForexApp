@@ -12,15 +12,21 @@ class PanelPage extends Component
     {
         let empty = 0;
         
-        return <PageSection key={currency} horizontal="left">
-            <Subtitle>{currency.split('_').join(' ')}</Subtitle>
-            {panelData[currency].map((show, id) => {
-                if(show)
-                    return <Analysis key={id} id={id} name={analysisData[id].name} currency={currency} description={false} />
-                else empty++;
-                if(empty === panelData[currency].length) return <TextBlock key={id}>{`Aby dodać analizę dla ${currency.split('_').join(' ')}, wejdź na podstronę pary walutowej w zakładce na dole.`}</TextBlock>
-            })}
-        </PageSection>
+        return (
+            <PageSection key={currency} horizontal="left">
+                <Subtitle>{currency.split('_').join(' ')}</Subtitle>
+                {panelData[currency].map((show, id) => {
+                    if(show)
+                        return <Analysis key={id} id={id} name={analysisData[id].name} currency={currency} description={false} />
+                    else 
+                        empty++;
+                    if(empty === panelData[currency].length) 
+                        return <TextBlock key={id}>{`Aby dodać analizę dla ${currency.split('_').join(' ')}, wejdź na podstronę pary walutowej w zakładce na dole.`}</TextBlock>
+                    else 
+                        return null;
+                })}
+            </PageSection>
+        )
     }
     
     render()

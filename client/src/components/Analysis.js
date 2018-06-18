@@ -56,6 +56,7 @@ class Analysis extends Component
     {
         const { name, description } = analysisData[this.props.id];
         const { panel, id } = this.props;
+        
         return(
             <AnalysisContainer>
                 <Title>"{name}"</Title>

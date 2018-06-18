@@ -46,12 +46,8 @@ class App extends Component
             {
                 this.setState({ hour: new Date().getHours() })  
                 for(let instrument in this.props.analysis)
-                {
                     for(let analysis in this.props.analysis[instrument])
-                    {
                         this.props.getAnalysis(analysisData[analysis].candles, instrument, analysisData[analysis].algorithm, analysis);
-                    }
-                }
             }                
         }, 60000);
     }
