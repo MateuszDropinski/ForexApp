@@ -14,7 +14,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { panelInitiation, positionsInitiation, getAnalysis } from './actions';
+import { panelInitiation, positionsInitiation, getAnalysis, getChart } from './actions';
 
 const PageContainer = styled.article`
     width:100%;
@@ -34,21 +34,24 @@ class App extends Component
     {
         return false;
     }
-    
+     
     componentDidMount()
     {
         this.props.panelInitiation();
         this.props.positionsInitiation();
         this.setState({ hour: new Date().getHours() });
         
-        setInterval(() => {
-            if(new Date().getHours() !== this.state.hour && new Date().getMinutes() > 0)
+        setInterval(() => {            
+            if( new Date().getHours() !== this.state.hour && new Date().getMinutes() > 0)
             {
-                this.setState({ hour: new Date().getHours() })  
+                this.setState({ hour: new Date().getHours() });  
                 for(let instrument in this.props.analysis)
                     for(let analysis in this.props.analysis[instrument])
-                        this.props.getAnalysis(analysisData[analysis].candles, instrument, analysisData[analysis].algorithm, analysis);
-            }                
+                        this.props.getAnalysis(analysisData[analysis].candles, instrument, analysisData[analysis].algorithm, analysis);                
+            }   
+            if(new Date().getMinutes()%5 === 1)
+                for(let instrument in this.props.charts)
+                    if(this.props.charts[instrument].length && this.props.charts[instrument]) this.props.getChart(instrument);
         }, 60000);
     }
     
@@ -68,14 +71,14 @@ class App extends Component
     }
 }
 
-function mapStateToProps({ analysis })
+function mapStateToProps({ analysis, charts })
 {
-    return { analysis };
+    return { analysis, charts };
 }
 
 function mapDispatchToProps(dispatch)
 {
-    return bindActionCreators({ panelInitiation, positionsInitiation, getAnalysis }, dispatch);
+    return bindActionCreators({ panelInitiation, positionsInitiation, getAnalysis, getChart }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -41,6 +41,7 @@ export function startStream()
                 {
                     const parsedData = JSON.parse(event.data);
                     const { closeoutBid, closeoutAsk, type, instrument } = parsedData;
+                    
                     dispatch(
                         sendData({
                             type, 
@@ -66,8 +67,8 @@ export function getChart(instrument)
             method: "post",
             body: JSON.stringify({
                 instrument,
-                granularity: "D",
-                count: "52"
+                granularity: "M5",
+                count: "48"
             }),
             headers: {"Content-Type": "application/json"}
         })
